@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostFourLeft
+  m_Name: GhostThreeUp
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -20,7 +20,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -612241715, guid: f41efd9ad827fbd43b085229337df666, type: 3}
+      value: {fileID: -1969667715, guid: ccec23adb88b1da40b512cbf69dc5392, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -41,7 +41,7 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
     pptrCurveMapping:
-    - {fileID: -612241715, guid: f41efd9ad827fbd43b085229337df666, type: 3}
+    - {fileID: -1969667715, guid: ccec23adb88b1da40b512cbf69dc5392, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
