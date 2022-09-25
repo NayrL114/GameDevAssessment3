@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tween
 {
- 
     // This Tween class is taken from week 7 tutorial exercise. 
 
     // C# auto-propeties that is publicly accesssible but can only set privately; 
@@ -21,6 +20,8 @@ public class Tween
         EndPos = endPos;
         StartTime = startTime;
         Duration = duration;
+
     }
+
 }
 
