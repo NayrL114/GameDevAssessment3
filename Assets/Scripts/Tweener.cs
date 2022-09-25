@@ -23,8 +23,7 @@ public class Tweener : MonoBehaviour
         //activeTween = new Tween(pacStudent, new Vector3(-21.5f, 7.5f, 0f), new Vector3(-21.5f, 11.5f, 0f), Time.time, 2f);
         moveState = 0;
         SetMovementDirection(moveState);
-        moveAudioSource.loop = true;
-        moveAudioSource.Play();
+        
     }
 
     // Update is called once per frame
@@ -37,13 +36,14 @@ public class Tweener : MonoBehaviour
         {            
             float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
             activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
-            /*
+            // // Start playing movement audio
             if (!moveAudioSource.isPlaying)
             {
-                moveAudioSource.loop = true;
+                //moveAudioSource.loop = true;
                 moveAudioSource.Play();
             }
-            */
+            //pacStudentAnimator.SetBool("isMoving", true);
+            //pacStudentAnimator.Play("PacStudentWalkingRight");
         }
 
         if (Vector3.Distance(pacStudent.position, activeTween.EndPos) <= 0.1f)
@@ -54,6 +54,11 @@ public class Tweener : MonoBehaviour
                 moveState = 0;
             }
             SetMovementDirection(moveState);
+        }
+
+        if (activeTween == null && moveAudioSource.isPlaying) // if there is an instance where pacStudent stops moving, pause the movement audio
+        {
+            moveAudioSource.Pause();
         }
 
     }
@@ -70,18 +75,22 @@ public class Tweener : MonoBehaviour
         if (moveState == 0) // move up, (-21.5, 7.5) -> (-21.5, 11.5)
         {
             activeTween = new Tween(pacStudent, new Vector3(-21.5f, 7.5f, 0f), new Vector3(-21.5f, 11.5f, 0f), Time.time, 2f);
+            pacStudentAnimator.Play("WalkingUp");//, -1, 0f);
         }
         else if (moveState == 1) // move right, (-21.5, 11.5) -> (-16.5, 11.5)
         {
             activeTween = new Tween(pacStudent, new Vector3(-21.5f, 11.5f, 0f), new Vector3(-16.5f, 11.5f, 0f), Time.time, 2f);
+            pacStudentAnimator.Play("PacStudentWalkingRight");//, -1, 0f);
         }
         else if (moveState == 2) // move down, (-16.5, 11.5) -> (-16.5, 7.5)
         {
             activeTween = new Tween(pacStudent, new Vector3(-16.5f, 11.5f, 0f), new Vector3(-16.5f, 7.5f, 0f), Time.time, 2f);
+            pacStudentAnimator.Play("PacStudentWalkingDown");//, -1, 0f);
         }
         else if (moveState == 3) // move left, (-16.5, 7.5) -> (-21.5, 7.5)
         {
             activeTween = new Tween(pacStudent, new Vector3(-16.5f, 7.5f, 0f), new Vector3(-21.5f, 7.5f, 0f), Time.time, 2f);
+            pacStudentAnimator.Play("PacStudentWalkingLeft");//, -1, 0f);
         }
     }
     
