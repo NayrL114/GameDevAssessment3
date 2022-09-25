@@ -17,6 +17,8 @@ public class MusicController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Switch the clip in the introBGM AudioSource
+        // The new clip is the BGM when ghost is in normal state
         if (!introBGMSource.isPlaying)
         {
             introBGMSource.clip = normalBGMClip;
