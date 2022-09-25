@@ -304,38 +304,57 @@ public class LevelGenerator : MonoBehaviour
             Debug.Log("checking spriteID 4");
             if (x - 1 >= 0)// above
             {
-                //Debug.Log("checking above");
-                if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4 || levelMap[x - 1, y] == 7)
+                Debug.Log("checking above");
+                if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4)
                 {
-                    return 0f;
+                    hasAbove = true;
                 }
             }
 
             if (x + 1 >= 0 && x + 1 < levelMap.GetLength(0))// below
             {
-                //Debug.Log("checking below");
-                if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4 || levelMap[x - 1, y] == 7)
+                Debug.Log("checking below");
+                if (levelMap[x + 1, y] == 3 || levelMap[x + 1, y] == 4)
                 {
-                    return 0f;
+                    hasBelow = true;
                 }
             }
 
             if (y + 1 >= 0 && y + 1 < levelMap.GetLength(1))// right
             {
-                //Debug.Log("checking right");
-                if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4 || levelMap[x - 1, y] == 7)
+                Debug.Log("checking right");
+                if (levelMap[x, y + 1] == 3 || levelMap[x, y + 1] == 4)
                 {
-                    return 90f;
+                    hasRight = true;
                 }
             }
 
             if (y - 1 >= 0)// left
             {
-                //Debug.Log("checking left");
-                if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4 || levelMap[x - 1, y] == 7)
+                Debug.Log("checking left");
+                if (levelMap[x, y - 1] == 3 || levelMap[x, y - 1] == 4)
                 {
-                    return 90f;
+                    hasLeft = true;
                 }
+            }
+
+            Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
+
+            if (hasLeft && hasRight && !hasAbove)
+            {
+                return 270f;
+            }
+            else if (hasLeft && hasRight && !hasBelow)
+            {
+                return 90f;
+            }
+            else if (hasBelow && hasAbove && !hasLeft)
+            {
+                return 0f;
+            }
+            else if (hasBelow && hasAbove && !hasRight)
+            {
+                return 180f;
             }
 
         }// end of spriteID 4
