@@ -152,7 +152,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 102458c9b4b5a8940bf3fcc9101ced58, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -697,7 +697,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c945a39aaee4bec44a772a1c955501fe, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1107,7 +1107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &624076342
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1120,7 +1120,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d672013087c711c459bb09176a1e76d9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1705,7 +1705,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -527820771
   m_SortingLayer: 3
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: -72215114, guid: 742c9d59991ec734c8a5d11fd387e3e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9231,7 +9231,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 445bc305a6add8444a6c7876f3b4e0ad, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -15842,7 +15842,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -527820771
   m_SortingLayer: 3
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: -72215114, guid: 742c9d59991ec734c8a5d11fd387e3e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -27172,7 +27172,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -527820771
   m_SortingLayer: 3
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: -72215114, guid: 742c9d59991ec734c8a5d11fd387e3e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -27489,7 +27489,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -527820771
   m_SortingLayer: 3
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: -72215114, guid: 742c9d59991ec734c8a5d11fd387e3e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

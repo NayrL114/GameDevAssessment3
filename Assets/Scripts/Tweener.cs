@@ -20,8 +20,11 @@ public class Tweener : MonoBehaviour
     void Start()
     {
         // Tween constructor: Tween(Transform target, Vector3 startPos, Vector3 endPos, float startTime, float duration)
-        activeTween = new Tween(pacStudent, new Vector3(-21.5f, 7.5f, 0f), new Vector3(-21.5f, 11.5f, 0f), Time.time, 2f);
+        //activeTween = new Tween(pacStudent, new Vector3(-21.5f, 7.5f, 0f), new Vector3(-21.5f, 11.5f, 0f), Time.time, 2f);
         moveState = 0;
+        SetMovementDirection(moveState);
+        moveAudioSource.loop = true;
+        moveAudioSource.Play();
     }
 
     // Update is called once per frame
@@ -31,14 +34,19 @@ public class Tweener : MonoBehaviour
         //Debug.Log(activeTweens.Count);
         //if (activeTween != null)
         if (activeTween != null)
-        {
-            
+        {            
             float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
             activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
-
+            /*
+            if (!moveAudioSource.isPlaying)
+            {
+                moveAudioSource.loop = true;
+                moveAudioSource.Play();
+            }
+            */
         }
 
-        if (CheckCloseDistance(pacStudent, activeTween))
+        if (Vector3.Distance(pacStudent.position, activeTween.EndPos) <= 0.1f)
         {
             moveState++;
             if (moveState >= 4)
@@ -46,16 +54,16 @@ public class Tweener : MonoBehaviour
                 moveState = 0;
             }
             SetMovementDirection(moveState);
-                        
         }
 
     }
 
-    
+    /*
     private bool CheckCloseDistance(Transform targetObject, Tween activeTween)
     {
         return Vector3.Distance(targetObject.position, activeTween.EndPos) <= 0.1f;
     }
+    */
     
     private void SetMovementDirection(int moveState)
     {
