@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class GhostManager : MonoBehaviour
 {
-    
+
     public enum GhostState
     {
-        Normal, 
-        Scared, 
-        Dead, 
+        Normal,
+        Scared,
+        Dead,
     }
     public static GhostState currentGhostState = GhostState.Normal;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void PathFinding()

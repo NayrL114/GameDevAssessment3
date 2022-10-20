@@ -207,8 +207,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1022001093}
-        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+      - m_Target: {fileID: 1022001096}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: LoadLevelOne
         m_Mode: 1
         m_Arguments:
@@ -5758,9 +5758,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1022001092}
+  - component: {fileID: 1022001097}
+  - component: {fileID: 1022001096}
   - component: {fileID: 1022001095}
-  - component: {fileID: 1022001093}
   - component: {fileID: 1022001094}
+  - component: {fileID: 1022001093}
+  - component: {fileID: 1022001098}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -5793,23 +5796,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1022001091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edbb2c764292dad498e382a258e253e9, type: 3}
+  m_Script: {fileID: 11500000, guid: fbd614f537227a94996231c8b5e7239e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastInputDirection: 0
-  currentInputDirection: 0
-  gameManager: {fileID: 0}
-  gameTimer: 0
-  gameTimerMilSec: 0
-  gameTimerSec: 0
-  gameTimerMin: 0
-  fraction: 0
-  MilSecTxt: 
-  SecTxt: 
-  MinTxt: 
-  ghostTimer: 0
-  lastTime: 0
-  gameTimerText: {fileID: 695809599}
 --- !u!114 &1022001094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5831,9 +5820,64 @@ MonoBehaviour:
   m_GameObject: {fileID: 1022001091}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be57d684b36ec54680bab79659200c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastInputDirection: 0
+  currentInputDirection: 0
+  gameManager: {fileID: 0}
+  testVariable: 0
+--- !u!114 &1022001096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022001091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc93f5dd32d98a44856414ae167f4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameTimer: 0
+  gameTimerMilSec: 0
+  gameTimerSec: 0
+  gameTimerMin: 0
+  fraction: 0
+  MilSecTxt: 
+  SecTxt: 
+  MinTxt: 
+  ghostTimer: 0
+  ghostTimerTxt: 10
+  gameTimerText: {fileID: 0}
+  ghostScareTimerText: {fileID: 0}
+  LivesIndicator: {fileID: 5233716605651527416, guid: 40231913419daee4daab94a564f952a6, type: 3}
+  pac: {fileID: 0}
+--- !u!114 &1022001097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022001091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1738197f2ba9a5b4faf7592c92b4f8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1022001098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022001091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfc600eed330b342a1a35b7b58302f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lives: 3
 --- !u!1 &1232604232
 GameObject:
   m_ObjectHideFlags: 0

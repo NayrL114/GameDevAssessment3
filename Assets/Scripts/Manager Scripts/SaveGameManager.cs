@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class SaveGameManager : MonoBehaviour
 {
-    
+
     void Awake()
     {
         LoadScore();
         LoadTime();
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SaveScore()
