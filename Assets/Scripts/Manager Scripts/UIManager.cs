@@ -31,6 +31,10 @@ public class UIManager : MonoBehaviour
     // Lives indicator, assigned prefab within Unity inspector
     public GameObject LivesIndicator;
 
+    // HUD Transform
+    public Transform hudTransform;
+    public Vector3 drawCor;
+
     // Reference to PacManager
     public PacManager pac;
 
@@ -38,6 +42,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         pac = gameObject.GetComponent<PacManager>();
+        drawCor = new Vector3(25f, 25f, 0f);
+
     }
 
     // Update is called once per frame
@@ -89,12 +95,13 @@ public class UIManager : MonoBehaviour
 
     public void DrawLives()
     {
-        Vector3 drawCor = new Vector3(-31.5f, -15f, 0f);
+        Debug.Log(Screen.currentResolution);
         for (int i = 0; i < pac.Lives; i++)
         {
-            Instantiate(LivesIndicator, drawCor, Quaternion.identity);
-            drawCor.x += 1.5f;
+            Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
+            drawCor.x += 40f;
         }
+        drawCor = new Vector3(25f, 25f, 0f);
     }
 
     public void LoadLevelOne()
@@ -130,6 +137,7 @@ public class UIManager : MonoBehaviour
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
             Button exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
             ghostScareTimerText = GameObject.FindWithTag("ScareTimer").GetComponent<Text>();
+            hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
             ghostScareTimerText.text = "" + ghostTimerTxt;
             //pac = gameObject.GetComponent<PacManager>();
 

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Tweener : MonoBehaviour
 {
+    // This Tweener script is modified for the title pac movement. 
+    // The actual pac movement in game is developed in a seperate script. 
 
     // This Tweener class is taken from and modified based on the Tweener script in week 7 tutorial exercise. 
     public Transform pacStudent;
-    public AudioSource moveAudioSource;
+    //public AudioSource moveAudioSource;
     public Animator pacStudentAnimator;
     private Tween activeTween;
     private int moveState;
@@ -33,6 +35,8 @@ public class Tweener : MonoBehaviour
         {            
             float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
             activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
+                        
+            /*
             // Start playing movement audio. 
             if (!moveAudioSource.isPlaying)
             {
@@ -40,6 +44,7 @@ public class Tweener : MonoBehaviour
                 moveAudioSource.Play();
 
             }
+            */
             
         }
 
@@ -54,11 +59,13 @@ public class Tweener : MonoBehaviour
 
         }
 
+        /*
         if (activeTween == null && moveAudioSource.isPlaying)
         {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
             moveAudioSource.Pause();
 
         }
+        */
 
     }// end of Update();
     
@@ -66,25 +73,29 @@ public class Tweener : MonoBehaviour
     {// Set the move direction and animation state based on the moveState. 
         if (moveState == 0) // move up, (-21.5, 7.5) -> (-21.5, 11.5)
         {
-            activeTween = new Tween(pacStudent, new Vector3(-21.5f, 7.5f, 0f), new Vector3(-21.5f, 11.5f, 0f), Time.time, 2f);
+            activeTween = new Tween(pacStudent, new Vector3(-2.2f, 2.2f, 0f), new Vector3(-2.2f, 4.6f, 0f), Time.time, 2f);
             pacStudentAnimator.Play("WalkingUp");//, -1, 0f);
+            pacStudent.rotation = Quaternion.Euler(0, 0, 0);            
         }
         else if (moveState == 1) // move right, (-21.5, 11.5) -> (-16.5, 11.5)
         {
-            activeTween = new Tween(pacStudent, new Vector3(-21.5f, 11.5f, 0f), new Vector3(-16.5f, 11.5f, 0f), Time.time, 2f);
+            activeTween = new Tween(pacStudent, new Vector3(-2.2f, 4.6f, 0f), new Vector3(2.2f, 4.6f, 0f), Time.time, 3.5f);
             pacStudentAnimator.Play("PacStudentWalkingRight");//, -1, 0f);
+            pacStudent.rotation = Quaternion.Euler(0, 0, 90);
         }
         else if (moveState == 2) // move down, (-16.5, 11.5) -> (-16.5, 7.5)
         {
-            activeTween = new Tween(pacStudent, new Vector3(-16.5f, 11.5f, 0f), new Vector3(-16.5f, 7.5f, 0f), Time.time, 2f);
+            activeTween = new Tween(pacStudent, new Vector3(2.2f, 4.6f, 0f), new Vector3(2.2f, 2.2f, 0f), Time.time, 2f);
             pacStudentAnimator.Play("PacStudentWalkingDown");//, -1, 0f);
+            pacStudent.rotation = Quaternion.Euler(0, 0, 180);
         }
         else if (moveState == 3) // move left, (-16.5, 7.5) -> (-21.5, 7.5)
         {
-            activeTween = new Tween(pacStudent, new Vector3(-16.5f, 7.5f, 0f), new Vector3(-21.5f, 7.5f, 0f), Time.time, 2f);
+            activeTween = new Tween(pacStudent, new Vector3(2.2f, 2.2f, 0f), new Vector3(-2.2f, 2.2f, 0f), Time.time, 3.5f);
             pacStudentAnimator.Play("PacStudentWalkingLeft");//, -1, 0f);
+            pacStudent.rotation = Quaternion.Euler(0, 0, 270);
         }
 
     }
     
-}// end of Tweener class;
+}// end of Tweener.cs;
