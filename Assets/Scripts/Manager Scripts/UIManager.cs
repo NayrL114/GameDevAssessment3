@@ -38,12 +38,16 @@ public class UIManager : MonoBehaviour
     // Reference to PacManager
     public PacManager pac;
 
+    // Reference to other scripts
+    public InputManager inputManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        pac = gameObject.GetComponent<PacManager>();
-        drawCor = new Vector3(25f, 25f, 0f);
+        pac = gameObject.GetComponent<PacManager>();        
+        inputManager = gameObject.GetComponent<InputManager>();
 
+        drawCor = new Vector3(28f, 28f, 0f);
     }
 
     // Update is called once per frame
@@ -101,7 +105,7 @@ public class UIManager : MonoBehaviour
             Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
             drawCor.x += 40f;
         }
-        drawCor = new Vector3(25f, 25f, 0f);
+        drawCor = new Vector3(28f, 28f, 0f);
     }
 
     public void LoadLevelOne()
@@ -140,6 +144,7 @@ public class UIManager : MonoBehaviour
             hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
             ghostScareTimerText.text = "" + ghostTimerTxt;
             //pac = gameObject.GetComponent<PacManager>();
+            inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
 
             exitButton.onClick.AddListener(ExitGame);
 

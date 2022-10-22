@@ -5949,6 +5949,7 @@ MonoBehaviour:
   currentInputDirection: 0
   gameManager: {fileID: 0}
   testVariable: 0
+  pacMovement: {fileID: 0}
 --- !u!114 &1022001096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6242,8 +6243,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -826393661
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1573740785, guid: e20549ffd34067745b9d72fc16c22a16, type: 3}
   m_Color: {r: 0.7921569, g: 0.7921569, b: 0.7921569, a: 1}

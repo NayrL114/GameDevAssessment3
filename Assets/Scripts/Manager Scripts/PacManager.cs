@@ -19,7 +19,7 @@ public class PacManager : MonoBehaviour
         
     }
 
-    public void DealDamage()
+    public void ReceiveDamage()
     {
         Lives--;
     }

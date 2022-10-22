@@ -7,6 +7,8 @@ public class LevelGenerator : MonoBehaviour
 
     // Automatic Level Generation is not finished. 
 
+    // For A4, this script is modified to automaticly layout the pallets, while the walls in map design are kept as manual tilemap layout. 
+
     public GameObject ManualLayoutMap;
     public GameObject outsideCorner;// ID 1 Sprite, outside corner
     public GameObject outsideWall;// ID 2 Sprite, outside wall
@@ -26,7 +28,7 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 bottomLeftInitial = new Vector3(-22.5f, -2.5f, 0f);// (top right corner of bottom left quadrant is (-9.5, -2.5)
     private Vector3 bottomRightInitial = new Vector3(-8.5f, -2.5f, 0f);
 
-    private int[,] levelMap = {
+    public int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
         {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
@@ -41,14 +43,13 @@ public class LevelGenerator : MonoBehaviour
         {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
         {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
         {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
-        //{0,0,0,0,0,0,5,0,0,0,4,0,0,0},
+        {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, // This row was disabled back in A3 for meeting the requirement of automatic level generation
     };
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Disabling manual layout at the start of play
-        ManualLayoutMap.SetActive(false);
+        //ManualLayoutMap.SetActive(false);
 
         Debug.Log("Printing top-left quadrant");
         printCoordinate = topLeftInitial;
@@ -62,6 +63,12 @@ public class LevelGenerator : MonoBehaviour
         Debug.Log("Printing bottom-left quadrant");
         printCoordinate = bottomLeftInitial;
         BottomLeftQuadrant();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
@@ -95,6 +102,10 @@ public class LevelGenerator : MonoBehaviour
                 //DrawSprite(levelMap[x, y], 0f);
                 DrawSprite(levelMap[x, y], RotateSprite(levelMap[x, y], x, y));
                 //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+
+
+
+
                 printCoordinate.x += 1;
             }
             printCoordinate.x = topRightInitial.x;
@@ -423,6 +434,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void DrawSprite(int spriteID, float rotation)// -22.5, 12.5
     {
+        /*
         if (spriteID == 1)// outside corner
         {
             //Debug.Log("printing first sprite");
@@ -449,7 +461,9 @@ public class LevelGenerator : MonoBehaviour
             GameObject outWall = Instantiate(insideWall, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
             outWall.transform.localScale = wallScale;
         }
-        else if (spriteID == 5)// normal pallet
+        */
+
+        /*else*/ if (spriteID == 5)// normal pallet
         {
             //Debug.Log("printing third sprite");
             GameObject outWall = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
@@ -461,12 +475,15 @@ public class LevelGenerator : MonoBehaviour
             GameObject outWall = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
             outWall.transform.localScale = palletScale;
         }
+
+        /*
         else if (spriteID == 7)// t junction
         {
             //Debug.Log("printing third sprite");
             GameObject outWall = Instantiate(outsideTJuuction, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
             outWall.transform.localScale = wallScale;
         }
+        */
 
     }
 
