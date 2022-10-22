@@ -28,7 +28,7 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 bottomLeftInitial = new Vector3(-22.5f, -2.5f, 0f);// (top right corner of bottom left quadrant is (-9.5, -2.5)
     private Vector3 bottomRightInitial = new Vector3(-8.5f, -2.5f, 0f);
 
-    public int[,] levelMap = {
+    public int[,] levelMap = {// max X is 15, max Y is 14, 
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
         {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
@@ -50,6 +50,7 @@ public class LevelGenerator : MonoBehaviour
     {
         // Disabling manual layout at the start of play
         //ManualLayoutMap.SetActive(false);
+        Debug.Log("Array length is " + levelMap.Length + " " + levelMap.GetLength(0));
 
         Debug.Log("Printing top-left quadrant");
         printCoordinate = topLeftInitial;
@@ -79,13 +80,15 @@ public class LevelGenerator : MonoBehaviour
 
     private void TopLeftQuadrant()
     {// POSITIVE x direction, POSITIVE y direction
-        for (int x = 0; x < levelMap.GetLength(0); x++)
+        for (int x = 0; x < levelMap.GetLength(0) - 1; x++)// Cant use levelMap.Length as the returned value is bigger than imaged. It is 210 instead of expected 15. 
         {
-            for (int y = 0; y < levelMap.GetLength(1); y++)
+            for (int y = 0; y < levelMap.GetLength(0) - 1; y++)
             {
+                Debug.Log("current xy is " + x + " " + y);
+                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //RotateSprite(levelMap[x, y], x, y)
-                DrawSprite(levelMap[x, y], RotateSprite(levelMap[x, y], x, y));
-                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
+                
                 printCoordinate.x += 1;
             }
             printCoordinate.x = topLeftInitial.x;
@@ -95,17 +98,15 @@ public class LevelGenerator : MonoBehaviour
 
     private void TopRightQuadrant()
     {// POSITIVE x direction, NEGATIVE y direction
-        for (int x = 0; x < levelMap.GetLength(0); x++)
+        for (int x = 0; x < levelMap.GetLength(0) - 1; x++)
         {
-            for (int y = levelMap.GetLength(1) - 1; y >= 0; y--)
+            for (int y = levelMap.GetLength(0) - 2; y >= 0; y--)
             {
+                Debug.Log("current xy is " + x + " " + y);
+                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
-                DrawSprite(levelMap[x, y], RotateSprite(levelMap[x, y], x, y));
-                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
-
-
-
-
+                DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
+                
                 printCoordinate.x += 1;
             }
             printCoordinate.x = topRightInitial.x;
@@ -117,11 +118,13 @@ public class LevelGenerator : MonoBehaviour
     {// NEGATIVE x direction, NEGATIVE y direction
         for (int x = levelMap.GetLength(0) - 1; x >= 0; x--)
         {
-            for (int y = levelMap.GetLength(1) - 1; y >= 0; y--)
+            for (int y = levelMap.GetLength(0) - 2; y >= 0; y--)
             {
+                Debug.Log("current xy is " + x + " " + y);
+                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
-                DrawSprite(levelMap[x, y], RotateSprite(levelMap[x, y], x, y));
-                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
+                
                 printCoordinate.x += 1;
             }
             printCoordinate.x = bottomRightInitial.x;
@@ -133,17 +136,85 @@ public class LevelGenerator : MonoBehaviour
     {// NEGATIVE x direction, POSITIVE y direction
         for (int x = levelMap.GetLength(0) - 1; x >= 0; x--)
         {
-            for (int y = 0; y < levelMap.GetLength(1); y++)
+            for (int y = 0; y < levelMap.GetLength(0) - 1; y++)
             {
+                Debug.Log("current xy is " + x + " " + y);
+                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
-                DrawSprite(levelMap[x, y], RotateSprite(levelMap[x, y], x, y));
-                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
+                
                 //Debug.Log(printCoordinate);
                 printCoordinate.x += 1;
             }
             printCoordinate.x = bottomLeftInitial.x;
             printCoordinate.y -= 1;
         }
+    }
+
+    private void DrawSprite(int spriteID/*, float rotation*/)// -22.5, 12.5
+    {
+        if (spriteID == 6)// power pallet
+        {
+            Debug.Log("printing POWERFUL pallet");
+            GameObject outputOne = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
+            outputOne.transform.localScale = palletScale;
+        }
+         
+        if (spriteID == 5)// normal pallet
+        {
+            Debug.Log("printing normal pallet");
+            GameObject outputTwo = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
+            outputTwo.transform.localScale = palletScale;
+        }
+
+        // Below are commented out old codes
+        /*
+        if (spriteID == 1)// outside corner
+        {
+            //Debug.Log("printing first sprite");
+            //Sprite testCorner =
+            //GameObject outCorner = Instantiate(outsideCorner, printCoordinate, Quaternion.Euler(0f, 0f, 90f));
+            GameObject outCorner = Instantiate(outsideCorner, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
+            outCorner.transform.localScale = wallScale;
+        }
+        else if (spriteID == 2)// outside wall
+        {
+            //Debug.Log("printing second sprite");
+            GameObject outWall = Instantiate(outsideWall, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
+            outWall.transform.localScale = wallScale;
+        }
+        else if (spriteID == 3)// inside corner
+        {
+            //Debug.Log("printing third sprite");
+            GameObject outWall = Instantiate(insideCorner, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
+            outWall.transform.localScale = wallScale;
+        }
+        else if (spriteID == 4)// inside wall
+        {
+            //Debug.Log("printing third sprite");
+            GameObject outWall = Instantiate(insideWall, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
+            outWall.transform.localScale = wallScale;
+        }
+        else if (spriteID == 5)// normal pallet
+        {
+            //Debug.Log("printing third sprite");
+            GameObject output = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
+            output.transform.localScale = palletScale;
+        }
+        else if (spriteID == 6)// power pallet
+        {
+            //Debug.Log("printing third sprite");
+            GameObject output = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
+            output.transform.localScale = palletScale;
+        }
+        else if (spriteID == 7)// t junction
+        {
+            //Debug.Log("printing third sprite");
+            GameObject outWall = Instantiate(outsideTJuuction, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
+            outWall.transform.localScale = wallScale;
+        }
+        */
+
     }
 
     private float RotateSprite(int spriteID, int x, int y)
@@ -155,10 +226,10 @@ public class LevelGenerator : MonoBehaviour
 
         if (spriteID == 1)
         {
-            Debug.Log("checking spriteID 1");
+            //Debug.Log("checking spriteID 1");
             if (x - 1 >= 0)// above
             {
-                Debug.Log("checking above");
+                //Debug.Log("checking above");
                 if (levelMap[x - 1, y] == 1 || levelMap[x - 1, y] == 2 || levelMap[x - 1, y] == 7)
                 {
                     hasAbove = true;
@@ -167,7 +238,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (x + 1 >= 0 && x + 1 < levelMap.GetLength(0))// below
             {
-                Debug.Log("checking below");
+                //Debug.Log("checking below");
                 if (levelMap[x + 1, y] == 1 || levelMap[x + 1, y] == 2 || levelMap[x - 1, y] == 7)
                 {
                     hasBelow = true;
@@ -176,7 +247,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (y + 1 >= 0 && y + 1 < levelMap.GetLength(1))// right
             {
-                Debug.Log("checking right");
+                //Debug.Log("checking right");
                 if (levelMap[x, y + 1] == 1 || levelMap[x, y + 1] == 2 || levelMap[x - 1, y] == 7)
                 {
                     hasRight = true;
@@ -185,14 +256,14 @@ public class LevelGenerator : MonoBehaviour
 
             if (y - 1 >= 0)// left
             {
-                Debug.Log("checking left");
+                //Debug.Log("checking left");
                 if (levelMap[x, y - 1] == 1 || levelMap[x, y - 1] == 2 || levelMap[x - 1, y] == 7)
                 {
                     hasLeft = true;
                 }
             }
 
-            Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
+            //Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
 
             if (hasAbove && hasRight)
             {
@@ -253,10 +324,10 @@ public class LevelGenerator : MonoBehaviour
         }// end of spriteID 2
         if (spriteID == 3)
         {
-            Debug.Log("checking spriteID 3");
+            //Debug.Log("checking spriteID 3");
             if (x - 1 >= 0)// above
             {
-                Debug.Log("checking above");
+                //Debug.Log("checking above");
                 if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4)
                 {
                     hasAbove = true;
@@ -265,7 +336,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (x + 1 >= 0 && x + 1 < levelMap.GetLength(0))// below
             {
-                Debug.Log("checking below");
+                //Debug.Log("checking below");
                 if (levelMap[x + 1, y] == 3 || levelMap[x + 1, y] == 4)
                 {
                     hasBelow = true;
@@ -274,7 +345,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (y + 1 >= 0 && y + 1 < levelMap.GetLength(1))// right
             {
-                Debug.Log("checking right");
+                //Debug.Log("checking right");
                 if (levelMap[x, y + 1] == 3 || levelMap[x, y + 1] == 4)
                 {
                     hasRight = true;
@@ -283,14 +354,14 @@ public class LevelGenerator : MonoBehaviour
 
             if (y - 1 >= 0)// left
             {
-                Debug.Log("checking left");
+                //Debug.Log("checking left");
                 if (levelMap[x, y - 1] == 3 || levelMap[x, y - 1] == 4)
                 {
                     hasLeft = true;
                 }
             }
 
-            Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
+            //Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
 
             if (hasAbove && hasRight)
             {
@@ -312,10 +383,10 @@ public class LevelGenerator : MonoBehaviour
         }// end of spriteID 3
         if (spriteID == 4)
         {
-            Debug.Log("checking spriteID 4");
+            //Debug.Log("checking spriteID 4");
             if (x - 1 >= 0)// above
             {
-                Debug.Log("checking above");
+                //Debug.Log("checking above");
                 if (levelMap[x - 1, y] == 3 || levelMap[x - 1, y] == 4)
                 {
                     hasAbove = true;
@@ -324,7 +395,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (x + 1 >= 0 && x + 1 < levelMap.GetLength(0))// below
             {
-                Debug.Log("checking below");
+                //Debug.Log("checking below");
                 if (levelMap[x + 1, y] == 3 || levelMap[x + 1, y] == 4)
                 {
                     hasBelow = true;
@@ -333,7 +404,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (y + 1 >= 0 && y + 1 < levelMap.GetLength(1))// right
             {
-                Debug.Log("checking right");
+                //Debug.Log("checking right");
                 if (levelMap[x, y + 1] == 3 || levelMap[x, y + 1] == 4)
                 {
                     hasRight = true;
@@ -342,14 +413,14 @@ public class LevelGenerator : MonoBehaviour
 
             if (y - 1 >= 0)// left
             {
-                Debug.Log("checking left");
+                //Debug.Log("checking left");
                 if (levelMap[x, y - 1] == 3 || levelMap[x, y - 1] == 4)
                 {
                     hasLeft = true;
                 }
             }
 
-            Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
+            //Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
 
             if (hasLeft && hasRight && !hasAbove)
             {
@@ -371,10 +442,10 @@ public class LevelGenerator : MonoBehaviour
         }// end of spriteID 4
         if (spriteID == 7)
         {
-            Debug.Log("checking spriteID 3");
+            ///Debug.Log("checking spriteID 3");
             if (x - 1 >= 0)// above
             {
-                Debug.Log("checking above");
+                //Debug.Log("checking above");
                 if (levelMap[x - 1, y] == 2 || levelMap[x - 1, y] == 4)
                 {
                     hasAbove = true;
@@ -383,7 +454,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (x + 1 >= 0 && x + 1 < levelMap.GetLength(0))// below
             {
-                Debug.Log("checking below");
+                //Debug.Log("checking below");
                 if (levelMap[x + 1, y] == 2 || levelMap[x + 1, y] == 4)
                 {
                     hasBelow = true;
@@ -392,7 +463,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (y + 1 >= 0 && y + 1 < levelMap.GetLength(1))// right
             {
-                Debug.Log("checking right");
+                //Debug.Log("checking right");
                 if (levelMap[x, y + 1] == 2 || levelMap[x, y + 1] == 4)
                 {
                     hasRight = true;
@@ -401,14 +472,14 @@ public class LevelGenerator : MonoBehaviour
 
             if (y - 1 >= 0)// left
             {
-                Debug.Log("checking left");
+                //Debug.Log("checking left");
                 if (levelMap[x, y - 1] == 2 || levelMap[x, y - 1] == 4)
                 {
                     hasLeft = true;
                 }
             }
 
-            Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
+            //Debug.Log(hasAbove + " " + hasBelow + " " + hasLeft + " " + hasRight);
 
             if (hasAbove && hasRight)
             {
@@ -431,60 +502,5 @@ public class LevelGenerator : MonoBehaviour
 
         return 45f;
     }// end of RotateSprite(int spriteID, int x, int y)
-
-    private void DrawSprite(int spriteID, float rotation)// -22.5, 12.5
-    {
-        /*
-        if (spriteID == 1)// outside corner
-        {
-            //Debug.Log("printing first sprite");
-            //Sprite testCorner =
-            //GameObject outCorner = Instantiate(outsideCorner, printCoordinate, Quaternion.Euler(0f, 0f, 90f));
-            GameObject outCorner = Instantiate(outsideCorner, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
-            outCorner.transform.localScale = wallScale;
-        }
-        else if (spriteID == 2)// outside wall
-        {
-            //Debug.Log("printing second sprite");
-            GameObject outWall = Instantiate(outsideWall, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
-            outWall.transform.localScale = wallScale;
-        }
-        else if (spriteID == 3)// inside corner
-        {
-            //Debug.Log("printing third sprite");
-            GameObject outWall = Instantiate(insideCorner, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
-            outWall.transform.localScale = wallScale;
-        }
-        else if (spriteID == 4)// inside wall
-        {
-            //Debug.Log("printing third sprite");
-            GameObject outWall = Instantiate(insideWall, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
-            outWall.transform.localScale = wallScale;
-        }
-        */
-
-        /*else*/ if (spriteID == 5)// normal pallet
-        {
-            //Debug.Log("printing third sprite");
-            GameObject output = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
-            output.transform.localScale = palletScale;
-        }
-        else if (spriteID == 6)// power pallet
-        {
-            //Debug.Log("printing third sprite");
-            GameObject output = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
-            output.transform.localScale = palletScale;
-        }
-
-        /*
-        else if (spriteID == 7)// t junction
-        {
-            //Debug.Log("printing third sprite");
-            GameObject outWall = Instantiate(outsideTJuuction, printCoordinate, Quaternion.Euler(0f, 0f, rotation));
-            outWall.transform.localScale = wallScale;
-        }
-        */
-
-    }
-
-}
+      
+}// end of LevelGenerator.cs
