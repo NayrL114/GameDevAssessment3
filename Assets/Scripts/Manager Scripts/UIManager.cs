@@ -138,16 +138,22 @@ public class UIManager : MonoBehaviour
         }
         else if (scene.buildIndex == 1)
         {
+            // UI related stuff that is useful in current script
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
             Button exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
             ghostScareTimerText = GameObject.FindWithTag("ScareTimer").GetComponent<Text>();
             hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
             ghostScareTimerText.text = "" + ghostTimerTxt;
             //pac = gameObject.GetComponent<PacManager>();
-            inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
 
+            // Help the InputManager to get stuffs in level 1
+            inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
+            inputManager.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
+
+            // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);
 
+            // Drawing the live counters. 
             DrawLives();
         }
     }    

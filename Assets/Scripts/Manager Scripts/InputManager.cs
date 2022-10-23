@@ -18,13 +18,18 @@ public class InputManager : MonoBehaviour
     public static DirectionState currentDirectionState = DirectionState.Up;
     public static DirectionState lastDirectionState = DirectionState.Up;
 
+    // lastInput and currentInput as required by assessment specification
     public int lastInput;
     public int currentInput;
 
+    // References to other scripts
     public GameManager gameManager;
-    public int testVariable;
-
     public PacMovement pacMovement;// should be initiased through UIManager, when clicking onto level 1. 
+
+    // Change the clip when pac eats something. 
+    public AudioSource pacAudioSource;
+    public AudioClip normalClip;
+    public AudioClip eatClip;
 
     private int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
@@ -67,7 +72,7 @@ public class InputManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         //gameManager = gameObject.GetComponent<GameManager>();
-        Debug.Log("Length of array is " + levelMap.Length + " " + levelMap.GetLength(0));
+        //Debug.Log("Length of array is " + levelMap.Length + " " + levelMap.GetLength(0));
     }
 
     // Update is called once per frame
@@ -179,7 +184,7 @@ public class InputManager : MonoBehaviour
 
         //Debug.Log(currentPos);
         //Debug.Log(lastInput);
-        printInput(lastInput);
+        //printInput(lastInput);
 
     }// end of Update()
 
@@ -192,10 +197,20 @@ public class InputManager : MonoBehaviour
             //Debug.Log(levelMap[(int)currentPos.x]);
             //Debug.Log(levelMap[(int)currentPos.y]);
 
-            if (levelMap[(int)currentPos.x, (int)currentPos.y] == 5 || levelMap[(int)currentPos.x, (int)currentPos.y] == 6 || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
+            if (levelMap[(int)currentPos.x, (int)currentPos.y] == 5 || levelMap[(int)currentPos.x, (int)currentPos.y] == 6)// || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
+                Debug.Log("setting first clip");
+                pacAudioSource.clip = eatClip;
+                pacAudioSource.Play();
                 return true;
-            }  
+            } 
+            else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
+            {
+                Debug.Log("setting second clip");
+                pacAudioSource.clip = normalClip;
+                pacAudioSource.Play();
+                return true;
+            }
             /*
             else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 6)
             {

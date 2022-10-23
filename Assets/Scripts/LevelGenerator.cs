@@ -80,7 +80,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void TopLeftQuadrant()
     {// POSITIVE x direction, POSITIVE y direction
-        for (int x = 0; x < levelMap.GetLength(0) - 1; x++)// Cant use levelMap.Length as the returned value is bigger than imaged. It is 210 instead of expected 15. 
+        for (int x = 0; x < levelMap.GetLength(0); x++)// Cant use levelMap.Length as the returned value is bigger than imaged. It is 210 instead of expected 15. 
         {
             for (int y = 0; y < levelMap.GetLength(0) - 1; y++)
             {
@@ -98,7 +98,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void TopRightQuadrant()
     {// POSITIVE x direction, NEGATIVE y direction
-        for (int x = 0; x < levelMap.GetLength(0) - 1; x++)
+        for (int x = 0; x < levelMap.GetLength(0); x++)
         {
             for (int y = levelMap.GetLength(0) - 2; y >= 0; y--)
             {
@@ -120,8 +120,8 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = levelMap.GetLength(0) - 2; y >= 0; y--)
             {
-                Debug.Log("current xy is " + x + " " + y);
-                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                //Debug.Log("current xy is " + x + " " + y);
+                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
                 DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
                 
@@ -138,8 +138,8 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelMap.GetLength(0) - 1; y++)
             {
-                Debug.Log("current xy is " + x + " " + y);
-                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                //Debug.Log("current xy is " + x + " " + y);
+                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
                 DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
                 

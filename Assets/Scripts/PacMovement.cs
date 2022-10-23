@@ -5,9 +5,17 @@ using UnityEngine;
 public class PacMovement : MonoBehaviour
 {
 
+    // This PacMovement script is modified based on the Tweener script from weekly lab activities. 
+
     public Animator pacAnimator;
     public Tween activeTween;
     private int localMoveState;
+
+    // Change the clip when pac eats something. 
+    public AudioSource pacAudioSource;
+    public AudioClip normalClip;
+    public AudioClip eatClip;
+
     //public bool isMoving;
     //public SpriteRenderer pacSpRend;
     //public Sprite pacIdleSprite;
@@ -82,6 +90,23 @@ public class PacMovement : MonoBehaviour
             //moveAudioSource.Pause();
             //pacAnimator.Play("PacStudentIdle");
             //pacSpRend.sprite = pacIdleSprite;
+            switch (localMoveState)
+            {
+                case 0:
+                    pacAnimator.Play("PacStudentIdle");
+                    break;
+                case 1:
+                    pacAnimator.Play("PacStudentIdleRight");
+                    break;
+                case 2:
+                    pacAnimator.Play("PacStudentIdleDown");
+                    break;
+                case 3:
+                    pacAnimator.Play("PacStudentIdleLeft");
+                    break;
+                default:
+                    break;
+            }
         }
         
     }// end of Update()
