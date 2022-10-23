@@ -16,6 +16,9 @@ public class PacMovement : MonoBehaviour
     public AudioClip normalClip;
     public AudioClip eatClip;
 
+    // Reference towards particle System for simulating dust
+    public ParticleSystem dustParticle;
+
     //public bool isMoving;
     //public SpriteRenderer pacSpRend;
     //public Sprite pacIdleSprite;
@@ -60,12 +63,22 @@ public class PacMovement : MonoBehaviour
             float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
             activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
 
-
             // Start playing movement audio. 
             if (!pacAudioSource.isPlaying)
             {
             //moveAudioSource.loop = true;
                 pacAudioSource.Play();
+            }
+
+            /*
+            if (!dustParticle.activeSelf)
+            {
+                dustParticle.SetActive(true);
+            }
+            */
+            if (!dustParticle.isPlaying)
+            {
+                dustParticle.Play();
             }
 
             if (Vector3.Distance(transform.position, activeTween.EndPos) <= 0.01f)
@@ -89,6 +102,8 @@ public class PacMovement : MonoBehaviour
         if (activeTween == null)// && moveAudioSource.isPlaying)
         {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
             pacAudioSource.Stop();
+            dustParticle.Stop();
+            //dustParticle.SetActive(false);
             //pacAnimator.Play("PacStudentIdle");
             //pacSpRend.sprite = pacIdleSprite;
             switch (localMoveState)
@@ -113,32 +128,32 @@ public class PacMovement : MonoBehaviour
     }// end of Update()
         
     public void SetMovementDirection(int moveState)// consider change to switch(moveState)
-    {// Set the move coordinates. 
+    {// smaller move time value means faster speed. 
         if (activeTween == null){
             if (moveState == 1) // move up, positive y direction
             {
-                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y + 1, 0f), Time.time, 0.2f);
+                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y + 1, 0f), Time.time, 0.5f);
                 pacAnimator.Play("WalkingUp");//, -1, 0f);
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 localMoveState = moveState;
             }
             else if (moveState == 2) // move right, positive x direction
             {
-                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x + 1, transform.position.y, 0f), Time.time, 0.2f);
+                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x + 1, transform.position.y, 0f), Time.time, 0.5f);
                 pacAnimator.Play("PacStudentWalkingRight");//, -1, 0f);
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 localMoveState = moveState;
             }
             else if (moveState == 3) // move down, negative y direction
             {
-                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y - 1, 0f), Time.time, 0.2f);
+                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y - 1, 0f), Time.time, 0.5f);
                 pacAnimator.Play("PacStudentWalkingDown");//, -1, 0f);
                 transform.rotation = Quaternion.Euler(0, 0, 180);
                 localMoveState = moveState;
             }
             else if (moveState == 4) // move left, negative x direction
             {
-                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x - 1, transform.position.y, 0f), Time.time, 0.2f);
+                activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x - 1, transform.position.y, 0f), Time.time, 0.5f);
                 pacAnimator.Play("PacStudentWalkingLeft");//, -1, 0f);
                 transform.rotation = Quaternion.Euler(0, 0, 270);
                 localMoveState = moveState;

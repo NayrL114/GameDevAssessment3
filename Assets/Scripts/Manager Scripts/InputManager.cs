@@ -155,7 +155,7 @@ public class InputManager : MonoBehaviour
                 
             }
 
-            Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
+            //Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
 
             //currentInput = lastInput;
             //bool moveParameter = checkMovementByDigit(lastInput);
@@ -298,7 +298,7 @@ public class InputManager : MonoBehaviour
                     //currentInput = 0;
                     pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
-                    Debug.Log("Can move up");
+                    //Debug.Log("Can move up");
                     return true;
                 }
                 /*
@@ -314,7 +314,7 @@ public class InputManager : MonoBehaviour
                     //currentInput = 1;
                     pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x, currentPos.y + 1);
-                    Debug.Log("Can move right");
+                    //Debug.Log("Can move right");
                     return true;
                 }
                 break;                
@@ -324,7 +324,7 @@ public class InputManager : MonoBehaviour
                     //currentInput = 2;
                     pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x + 1, currentPos.y);
-                    Debug.Log("Can move down");
+                    //Debug.Log("Can move down");
                     return true;
                 }
                 break;                
@@ -334,7 +334,7 @@ public class InputManager : MonoBehaviour
                     //currentInput = 3;
                     pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x, currentPos.y - 1);
-                    Debug.Log("Can move left");
+                    //Debug.Log("Can move left");
                     return true;
                 }
                 break;
