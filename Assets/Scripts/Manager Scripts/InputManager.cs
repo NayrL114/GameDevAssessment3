@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class InputManager : MonoBehaviour
 {
     // Consider put the following enum and general movement (including pac, ghost and cherry) into a MovementManager
+    /*
     public enum DirectionState
     {
         Up,
@@ -17,6 +18,7 @@ public class InputManager : MonoBehaviour
 
     public static DirectionState currentDirectionState = DirectionState.Up;
     public static DirectionState lastDirectionState = DirectionState.Up;
+    */
 
     // lastInput and currentInput as required by assessment specification
     public int lastInput;

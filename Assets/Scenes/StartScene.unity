@@ -5886,6 +5886,7 @@ GameObject:
   - component: {fileID: 1022001094}
   - component: {fileID: 1022001093}
   - component: {fileID: 1022001098}
+  - component: {fileID: 1022001099}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -6007,6 +6008,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Lives: 3
+--- !u!114 &1022001099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022001091}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e16cc10c06777448722afeb6a0da31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cherry: {fileID: 4291235734562422265, guid: 23ff219a7e6f48b4db6696f135e07a3c, type: 3}
+  score: 10
 --- !u!1 &1232604232
 GameObject:
   m_ObjectHideFlags: 0

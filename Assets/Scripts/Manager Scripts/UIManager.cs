@@ -150,6 +150,10 @@ public class UIManager : MonoBehaviour
             inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
             inputManager.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
 
+            // Enable the cherryController attached to Game Manager
+            CherryController cherryController = gameObject.GetComponent<CherryController>();
+            cherryController.enabled = !cherryController.enabled;
+
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);
 
