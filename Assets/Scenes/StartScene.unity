@@ -5945,11 +5945,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be57d684b36ec54680bab79659200c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastInputDirection: 0
-  currentInputDirection: 0
+  lastInput: 0
+  currentInput: 0
   gameManager: {fileID: 0}
-  testVariable: 0
   pacMovement: {fileID: 0}
+  pacAudioSource: {fileID: 0}
+  normalClip: {fileID: 8300000, guid: d45cf7d3c78337e4590e22edc75454f0, type: 3}
+  eatClip: {fileID: 8300000, guid: 12caac2dbad9a5f408bb333aec1047bb, type: 3}
 --- !u!114 &1022001096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5979,6 +5981,7 @@ MonoBehaviour:
   hudTransform: {fileID: 0}
   drawCor: {x: 0, y: 0, z: 0}
   pac: {fileID: 0}
+  inputManager: {fileID: 0}
 --- !u!114 &1022001097
 MonoBehaviour:
   m_ObjectHideFlags: 0

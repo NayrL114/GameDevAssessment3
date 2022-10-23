@@ -47,6 +47,7 @@ public class PacMovement : MonoBehaviour
     {
         //SetMovementDirection(1);
         //pacSpRend = gameObject.GetComponent<SpriteRenderer>();
+        pacAudioSource = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -61,11 +62,11 @@ public class PacMovement : MonoBehaviour
 
 
             // Start playing movement audio. 
-            //if (!moveAudioSource.isPlaying)
-            //{
+            if (!pacAudioSource.isPlaying)
+            {
             //moveAudioSource.loop = true;
-            //    moveAudioSource.Play();
-            //}
+                pacAudioSource.Play();
+            }
 
             if (Vector3.Distance(transform.position, activeTween.EndPos) <= 0.01f)
             {
@@ -87,7 +88,7 @@ public class PacMovement : MonoBehaviour
                 
         if (activeTween == null)// && moveAudioSource.isPlaying)
         {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
-            //moveAudioSource.Pause();
+            pacAudioSource.Stop();
             //pacAnimator.Play("PacStudentIdle");
             //pacSpRend.sprite = pacIdleSprite;
             switch (localMoveState)

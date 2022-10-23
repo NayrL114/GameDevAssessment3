@@ -31,6 +31,9 @@ public class InputManager : MonoBehaviour
     public AudioClip normalClip;
     public AudioClip eatClip;
 
+    //public AudioSource normalSource;
+    //public AudioSource eatSource;
+
     private int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
@@ -85,8 +88,7 @@ public class InputManager : MonoBehaviour
             {
                 lastInput = 0;
                 if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)) && pacMovement.activeTween == null)
-                {
-                    
+                {                    
                     pacMovement.SetMovementDirection(lastInput);
                     currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
                 }
@@ -200,15 +202,25 @@ public class InputManager : MonoBehaviour
             if (levelMap[(int)currentPos.x, (int)currentPos.y] == 5 || levelMap[(int)currentPos.x, (int)currentPos.y] == 6)// || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
                 Debug.Log("setting first clip");
-                pacAudioSource.clip = eatClip;
-                pacAudioSource.Play();
+                // Put the audio play codes into the section for detecting eating pallet
+                if (!pacAudioSource.isPlaying)
+                {
+                    pacAudioSource.clip = eatClip;
+                    pacAudioSource.Play();
+                }
+                //
                 return true;
             } 
             else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
                 Debug.Log("setting second clip");
-                pacAudioSource.clip = normalClip;
-                pacAudioSource.Play();
+                // Put the audio play codes into the section for detecting eating pallet
+                if (!pacAudioSource.isPlaying)
+                {
+                    pacAudioSource.clip = normalClip;
+                    pacAudioSource.Play();
+                }
+                // 
                 return true;
             }
             /*
