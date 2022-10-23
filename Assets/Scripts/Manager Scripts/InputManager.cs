@@ -83,105 +83,156 @@ public class InputManager : MonoBehaviour
     {
         if (pacMovement != null) // making sure that these codes are not called in main menu
         {
+            //currentInput = lastInput;
             // If users provide input
             if (Input.GetKeyDown(KeyCode.W))// Up
             {
-                lastInput = 0;
-                if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)) && pacMovement.activeTween == null)
-                {                    
-                    pacMovement.SetMovementDirection(lastInput);
-                    currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                lastInput = 1;
+                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+                {
+                    checkMovementByDigit(currentInput);
                 }
+                //currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                */
+                if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)))// && pacMovement.activeTween == null)
+                {
+                    // pacMovement.SetMovementDirection(lastInput);
+                    currentInput = lastInput;
+                    //currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                }
+                
             }
             else if (Input.GetKeyDown(KeyCode.D))// Right
             {
-                lastInput = 1;
-                //currentInputDirection = 1;
-                //pacMovement.SetMovementDirection(1);
-                if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)) && pacMovement.activeTween == null)
+                lastInput = 2;
+                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
                 {
-                    
-                    pacMovement.SetMovementDirection(lastInput);
-                    currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    checkMovementByDigit(currentInput);
                 }
+                //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                */
+                if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)))// && pacMovement.activeTween == null)
+                {                    
+                    //pacMovement.SetMovementDirection(lastInput);
+                    currentInput = lastInput;
+                    //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                }
+                
             }
             else if (Input.GetKeyDown(KeyCode.S))// Down
             {
-                lastInput = 2;
-                //currentInputDirection = 2;
-                //pacMovement.SetMovementDirection(2);
-                if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)) && pacMovement.activeTween == null)
+                lastInput = 3;
+                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
                 {
-                    
-                    pacMovement.SetMovementDirection(lastInput);
-                    currentPos = new Vector2(currentPos.x + 1, currentPos.y);
+                    checkMovementByDigit(currentInput);
                 }
+                //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                */
+                if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)))// && pacMovement.activeTween == null)
+                {                    
+                    //pacMovement.SetMovementDirection(lastInput);
+                    currentInput = lastInput;
+                    //currentPos = new Vector2(currentPos.x + 1, currentPos.y);
+                }
+                
             }
             else if (Input.GetKeyDown(KeyCode.A))// Left
             {
-                lastInput = 3;
-                //currentInputDirection = 3;
-                //pacMovement.SetMovementDirection(3);
-                if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)) && pacMovement.activeTween == null)
+                lastInput = 4;
+                /*
+                if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
                 {
-                    
-                    pacMovement.SetMovementDirection(lastInput);
-                    currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                    checkMovementByDigit(currentInput);
                 }
+                //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                */
+                if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)))// && pacMovement.activeTween == null)
+                {                    
+                    //pacMovement.SetMovementDirection(lastInput);
+                    currentInput = lastInput;
+                    //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                }
+                
+            }
+
+            Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
+
+            //currentInput = lastInput;
+            //bool moveParameter = checkMovementByDigit(lastInput);
+            //Debug.Log(moveParameter);
+            //if (moveParameter == false)
+            if (checkMovementByDigit(lastInput) == false) //&& pacMovement.activeTween == null)
+            {
+                checkMovementByDigit(currentInput);
+            }
+            else
+            {
+                currentInput = lastInput;
             }
             //Debug.Log(currentInputDirection);
             //checkMovement(currentPos);
 
+            /*
+            if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1))) // && pacMovement.activeTween == null)
+            {
+                //pacMovement.SetMovementDirection(lastInput);
+                currentInput = lastInput;
+                //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+            }
+            */
+
             // If pac is not lerping
+            /*
             if (pacMovement.activeTween == null)
             {
                 if (!checkMovementByDigit(lastInput))
                 {
                     checkMovementByDigit(currentInput);
                 }
+            */
 
-                /*
-                switch (lastInput)
-                {
-                    case 0:
-                        if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)) && pacMovement.activeTween == null)
-                        {
-                            currentInput = 0;
-                            pacMovement.SetMovementDirection(currentInput);
-                            currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
-                        }
-                        else if ()
-                        {
+            /*
+            switch (lastInput)
+            {
+                case 0:
+                    if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)) && pacMovement.activeTween == null)
+                    {
+                        currentInput = 0;
+                        pacMovement.SetMovementDirection(currentInput);
+                        currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                    }
+                    else if ()
+                    {
 
-                        }
-                        break;
-                    case 1:
-                        if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)) && pacMovement.activeTween == null)
-                        {
-                            currentInput = 1;
-                            pacMovement.SetMovementDirection(currentInput);
-                            currentPos = new Vector2(currentPos.x, currentPos.y + 1);
-                        }
-                        break;
-                    case 2:
-                        if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)) && pacMovement.activeTween == null)
-                        {
-                            currentInput = 2;
-                            pacMovement.SetMovementDirection(currentInput);
-                            currentPos = new Vector2(currentPos.x + 1, currentPos.y);
-                        }
-                        break;
-                    case 3:
-                        if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)) && pacMovement.activeTween == null)
-                        {
-                            currentInput = 3;
-                            pacMovement.SetMovementDirection(currentInput);
-                            currentPos = new Vector2(currentPos.x, currentPos.y - 1);
-                        }
-                        break;
-                }
-                */
+                    }
+                    break;
+                case 1:
+                    if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)) && pacMovement.activeTween == null)
+                    {
+                        currentInput = 1;
+                        pacMovement.SetMovementDirection(currentInput);
+                        currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    }
+                    break;
+                case 2:
+                    if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)) && pacMovement.activeTween == null)
+                    {
+                        currentInput = 2;
+                        pacMovement.SetMovementDirection(currentInput);
+                        currentPos = new Vector2(currentPos.x + 1, currentPos.y);
+                    }
+                    break;
+                case 3:
+                    if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)) && pacMovement.activeTween == null)
+                    {
+                        currentInput = 3;
+                        pacMovement.SetMovementDirection(currentInput);
+                        currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                    }
+                    break;
             }
+            */
+            //}
         }// end of if (pacMovement != null)
 
         //Debug.Log(currentPos);
@@ -194,14 +245,14 @@ public class InputManager : MonoBehaviour
     {
         //return (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < levelMap.GetLength(0) && currentPos.y < levelMap.GetLength(0));
         
-        if (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < levelMap.Length - 1 && currentPos.y < levelMap.GetLength(0) - 1)
+        if (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < 30 && currentPos.y < levelMap.GetLength(0) - 2)
         {
             //Debug.Log(levelMap[(int)currentPos.x]);
             //Debug.Log(levelMap[(int)currentPos.y]);
 
             if (levelMap[(int)currentPos.x, (int)currentPos.y] == 5 || levelMap[(int)currentPos.x, (int)currentPos.y] == 6)// || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
-                Debug.Log("setting first clip");
+                //Debug.Log("setting first clip");
                 // Put the audio play codes into the section for detecting eating pallet
                 if (!pacAudioSource.isPlaying)
                 {
@@ -213,7 +264,7 @@ public class InputManager : MonoBehaviour
             } 
             else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
-                Debug.Log("setting second clip");
+                //Debug.Log("setting second clip");
                 // Put the audio play codes into the section for detecting eating pallet
                 if (!pacAudioSource.isPlaying)
                 {
@@ -234,20 +285,21 @@ public class InputManager : MonoBehaviour
             }
             */
         }
-        //Debug.Log("Goodbye");
         return false;
-    }
+    }// end of checkMovement(Vector2 currentPos)
 
     private bool checkMovementByDigit(int input)
     {
         switch (input)
         {
-            case 0:
+            case 1:
                 if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)) && pacMovement.activeTween == null)
                 {
-                    currentInput = 0;
-                    pacMovement.SetMovementDirection(currentInput);
+                    //currentInput = 0;
+                    pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                    Debug.Log("Can move up");
+                    return true;
                 }
                 /*
                 else
@@ -255,56 +307,64 @@ public class InputManager : MonoBehaviour
                     pacMovement.SetMovementDirection()
                 }
                 */
-                //break;
-                return true;
-            case 1:
+                break;                
+            case 2:
                 if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)) && pacMovement.activeTween == null)
                 {
-                    currentInput = 1;
-                    pacMovement.SetMovementDirection(currentInput);
+                    //currentInput = 1;
+                    pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    Debug.Log("Can move right");
+                    return true;
                 }
-                //break;
-                return true;
-            case 2:
+                break;                
+            case 3:
                 if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)) && pacMovement.activeTween == null)
                 {
-                    currentInput = 2;
-                    pacMovement.SetMovementDirection(currentInput);
+                    //currentInput = 2;
+                    pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x + 1, currentPos.y);
+                    Debug.Log("Can move down");
+                    return true;
                 }
-                //break;
-                return true;
-            case 3:
+                break;                
+            case 4:
                 if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)) && pacMovement.activeTween == null)
                 {
-                    currentInput = 3;
-                    pacMovement.SetMovementDirection(currentInput);
+                    //currentInput = 3;
+                    pacMovement.SetMovementDirection(input);
                     currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                    Debug.Log("Can move left");
+                    return true;
                 }
-                //break;
-                return true;
+                break;
+                
         }// end of switch(input)
         return false;
     }// end of checkMovementByDigit(int input)
 
-    private void printInput(int input)
+    private string printInput(int input)
     {
         switch (input)
         {
-            case 0:
-                Debug.Log("Pressed: W");
-                break;
             case 1:
-                Debug.Log("Pressed: D");
-                break;
+                //Debug.Log("Pressed: W");
+                return "W";
+                //break;
             case 2:
-                Debug.Log("Pressed: S");
-                break;
+                //Debug.Log("Pressed: D");
+                return "D";
+                //break;
             case 3:
-                Debug.Log("Pressed: A");
-                break;
-
+                //Debug.Log("Pressed: S");
+                return "S";
+                //break;
+            case 4:
+                //Debug.Log("Pressed: A");
+                return "A";
+                //break;
+            default:
+                return "None";
         }
     }
 
