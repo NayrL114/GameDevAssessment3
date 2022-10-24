@@ -1,7 +1,12 @@
-This txt file is served as a simple log and a reminder on what to do when I'm opening this project next time
+This txt file is served as a simple log and a reminder on what to do when I'm opening this project next time. 
+Time format is yy/mm/dd
 
 22/10/23
 Work on the animation clips for pac idle facing different directions
 Work on checking the audio source when pac is moving
 Work on the cherryController script
 Update the manual layout so it doesn't show the pallets in manual layout (try disabling an existing tilemap level?)
+
+22/10/24
+Tweak the movement coordinate system for cherry spawning and moving
+start adding colliders and collision methods to pallets

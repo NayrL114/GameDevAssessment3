@@ -39,13 +39,19 @@ public class UIManager : MonoBehaviour
     public PacManager pac;
 
     // Reference to other scripts
-    public InputManager inputManager;
+    //public InputManager inputManager;
+
+    // Reference to PacStudentController & CherryController
+    public PacStudentController pacCtrl;
+    public CherryController cherryController;
 
     // Start is called before the first frame update
     void Start()
     {
         pac = gameObject.GetComponent<PacManager>();        
-        inputManager = gameObject.GetComponent<InputManager>();
+        //inputManager = gameObject.GetComponent<InputManager>();
+        pacCtrl = gameObject.GetComponent<PacStudentController>();
+        cherryController = gameObject.GetComponent<CherryController>();
 
         drawCor = new Vector3(28f, 28f, 0f);
     }
@@ -63,7 +69,7 @@ public class UIManager : MonoBehaviour
             //ghost scare timer stuff
             if (ghostTimer >= 1 /* && GhostState == Scared*/)
             {
-                Debug.Log(ghostTimerTxt);
+                //Debug.Log(ghostTimerTxt);
                 ghostScareTimerText.text = "" + ghostTimerTxt;
                 ghostTimerTxt--;
                 ghostTimer = 0;
@@ -135,6 +141,17 @@ public class UIManager : MonoBehaviour
         if (scene.buildIndex == 0)
         {
             Debug.Log("Start scene is called. ");
+            //Destroy(gameObject);
+            //cherryController.enabled = !cherryController.enabled;
+            
+            cherryController.enabled = false;
+            if (cherryController.cherryObject != null)
+            {// destroy the stuffs in cherryController so there wont be errors
+                cherryController.destroyCherry();
+                cherryController.clearStuff();
+                //cherryController.clearTween();
+            }
+            
         }
         else if (scene.buildIndex == 1)
         {
@@ -147,12 +164,19 @@ public class UIManager : MonoBehaviour
             //pac = gameObject.GetComponent<PacManager>();
 
             // Help the InputManager to get stuffs in level 1
-            inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
-            inputManager.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
+            //inputManager.pacMovement = GameObject.FindWithTag("Player").GetComponent<PacMovement>();
+            //inputManager.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
+
+            // Help PacStudentController to get stuffs in level 1
+            pacCtrl.pac = GameObject.FindWithTag("Player");
+            pacCtrl.pacAnimator = GameObject.FindWithTag("Player").GetComponent<Animator>();
+            pacCtrl.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
+            pacCtrl.dustParticle = GameObject.FindWithTag("DustEffect").GetComponent<ParticleSystem>();
 
             // Enable the cherryController attached to Game Manager
-            CherryController cherryController = gameObject.GetComponent<CherryController>();
-            cherryController.enabled = !cherryController.enabled;
+            //CherryController cherryController = gameObject.GetComponent<CherryController>();
+            //cherryController.enabled = !cherryController.enabled;
+            cherryController.enabled = true;
 
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);

@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 560485336}
   - component: {fileID: 560485337}
   m_Layer: 0
-  m_Name: PacStudentMain
+  m_Name: PacStudentMainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5532,7 +5532,7 @@ GameObject:
   - component: {fileID: 621696132}
   - component: {fileID: 621696134}
   m_Layer: 0
-  m_Name: SecondVersionWallSprite_6 (1)
+  m_Name: LowerWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5882,11 +5882,11 @@ GameObject:
   - component: {fileID: 1022001092}
   - component: {fileID: 1022001097}
   - component: {fileID: 1022001096}
-  - component: {fileID: 1022001095}
   - component: {fileID: 1022001094}
   - component: {fileID: 1022001093}
   - component: {fileID: 1022001098}
   - component: {fileID: 1022001099}
+  - component: {fileID: 1022001100}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -5934,25 +5934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e91d0984849f24eb793c237d0b5778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1022001095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022001091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8be57d684b36ec54680bab79659200c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lastInput: 0
-  currentInput: 0
-  gameManager: {fileID: 0}
-  pacMovement: {fileID: 0}
-  pacAudioSource: {fileID: 0}
-  normalClip: {fileID: 8300000, guid: d45cf7d3c78337e4590e22edc75454f0, type: 3}
-  eatClip: {fileID: 8300000, guid: 12caac2dbad9a5f408bb333aec1047bb, type: 3}
 --- !u!114 &1022001096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5982,7 +5963,8 @@ MonoBehaviour:
   hudTransform: {fileID: 0}
   drawCor: {x: 0, y: 0, z: 0}
   pac: {fileID: 0}
-  inputManager: {fileID: 0}
+  pacCtrl: {fileID: 0}
+  cherryController: {fileID: 0}
 --- !u!114 &1022001097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6021,7 +6003,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cherry: {fileID: 4291235734562422265, guid: 23ff219a7e6f48b4db6696f135e07a3c, type: 3}
+  cherryObject: {fileID: 0}
   score: 10
+  centre: {x: -9, y: -2, z: 0}
+--- !u!114 &1022001100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022001091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aceb5ca2fb302f54f9cd46b9b04bcac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pacAnimator: {fileID: 0}
+  pacAudioSource: {fileID: 0}
+  normalClip: {fileID: 8300000, guid: d45cf7d3c78337e4590e22edc75454f0, type: 3}
+  eatClip: {fileID: 8300000, guid: 12caac2dbad9a5f408bb333aec1047bb, type: 3}
+  dustParticle: {fileID: 0}
+  lastInput: 0
+  currentInput: 0
+  gameManager: {fileID: 1022001097}
+  pac: {fileID: 0}
 --- !u!1 &1232604232
 GameObject:
   m_ObjectHideFlags: 0
@@ -6217,7 +6222,7 @@ GameObject:
   - component: {fileID: 1300669167}
   - component: {fileID: 1300669169}
   m_Layer: 0
-  m_Name: SecondVersionWallSprite_6
+  m_Name: UpperWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6328,7 +6333,7 @@ GameObject:
   - component: {fileID: 1362907623}
   - component: {fileID: 1362907622}
   m_Layer: 0
-  m_Name: ghostGeneric_0
+  m_Name: GhostMainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
