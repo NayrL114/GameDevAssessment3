@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 137278252}
   - component: {fileID: 137278250}
   m_Layer: 0
-  m_Name: PacStudentTitle
+  m_Name: AnimatedTitleBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
