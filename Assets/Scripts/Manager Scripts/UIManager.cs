@@ -144,9 +144,9 @@ public class UIManager : MonoBehaviour
     public void LoadLevelOne()
     {
         Debug.Log("opening level 1");
-        levelOneButton.onClick.GetPersistentEventCount();
+        //levelOneButton.onClick.GetPersistentEventCount();
         levelOneButton.onClick.RemoveListener(LoadLevelOne);
-        levelOneButton.onClick.GetPersistentEventCount();
+        //levelOneButton.onClick.GetPersistentEventCount();
 
         GameManager.currentGameState = GameManager.GameState.LevelOne;
         SceneManager.LoadScene(1);
@@ -169,9 +169,9 @@ public class UIManager : MonoBehaviour
     public void ExitGame()
     {
         Debug.Log("returning to main menu");
-        exitButton.onClick.GetPersistentEventCount();
+        //exitButton.onClick.GetPersistentEventCount();
         exitButton.onClick.RemoveListener(ExitGame);
-        exitButton.onClick.GetPersistentEventCount();
+        //exitButton.onClick.GetPersistentEventCount();
 
         GameManager.currentGameState = GameManager.GameState.Start;
         //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);

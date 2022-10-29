@@ -13,8 +13,10 @@ public class CherryController : MonoBehaviour
     public float spawnTimer = 0f;    
     public Tween activeTween;
 
-    public Vector3 centre = new Vector3(-9f, -2f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
-    public Vector3[,] spawnPoints = {
+    //public Vector3 centre = new Vector3(-9f, -2f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
+    public Vector3 centre = new Vector3(0f, 0f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
+
+    /*public Vector3[,] spawnPoints = {
         {new Vector3(-9f, 23f, 0f), new Vector3(-9f, -27f, 0f)}, // N to S
         {new Vector3(-9f, -27f, 0f), new Vector3(-9f, 23f, 0f)}, // S to N
         {new Vector3(-38f, -2f, 0f), new Vector3(20f, -2f, 0f)}, // W to E, slighly increased X so cherry will spawn outside camera, was 4 less
@@ -24,7 +26,7 @@ public class CherryController : MonoBehaviour
         {new Vector3(-26.5f, -19.5f, 0f), new Vector3(8.5f, 15.5f, 0f)}, // SW to NE
         {new Vector3(4.5f, -19.5f, 0f), new Vector3(-23.5f, 15.5f, 0f)}, // SE to NW, slighly decreased X so cherry will go through centre, was 4 more
         // All coordinates are calculated based on new Vector3(-9f, -2f, 0f), which roughly forms a circle.
-    };
+    };*/
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,7 @@ public class CherryController : MonoBehaviour
 
         // spawning cherry every 10 seconds
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= 10f)
+        if (spawnTimer >= 3f)// 10f
         {
             spawnCherry();
             spawnTimer = 0;
@@ -67,44 +69,51 @@ public class CherryController : MonoBehaviour
             Invoke("spawnCherry", 2.0f);
         }        
         */
-        //Invoke("destroyCherry", 2f);
+    //Invoke("destroyCherry", 2f);
     }
 
     private void spawnCherry()
     {
-        int areaNum = Random.Range(0, 8);
-        /*
+        int areaNum = Random.Range(1, 5);
+        
         Vector3 spawnCor;
         switch (areaNum)
         {
             case 1:
-                //spawnCor = new Vector3(Random.Range(20f, 21f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the righter area
-                spawnCor = spawnPoints[0, 0];// N to S
+                spawnCor = new Vector3(Random.Range(20f, 21f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the righter area
+                //spawnCor = spawnPoints[0, 0];// N to S
                 break;
             case 2:
-                //spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(15f - 9f, 16f - 2f), 0f);// roughly the upper area
-                spawnCor = spawnPoints[1, 0];// N to S
+                spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(15f - 9f, 16f - 2f), 0f);// roughly the upper area
+                //spawnCor = spawnPoints[1, 0];// N to S
                 break;
             case 3:
-                //spawnCor = new Vector3(Random.Range(-39f, -38f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the lefter area
-                spawnCor = spawnPoints[2, 0];// N to S
+                spawnCor = new Vector3(Random.Range(-39f, -38f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the lefter area
+                //spawnCor = spawnPoints[2, 0];// N to S
                 break;
             case 4:
-                //spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(-21f - 9f, -20f - 2f), 0f);// roughly the down area
-                spawnCor = spawnPoints[3, 0];// N to S
+                spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(-21f - 9f, -20f - 2f), 0f);// roughly the down area
+                //spawnCor = spawnPoints[3, 0];// N to S
                 break;
             default:
                 spawnCor = new Vector3(-9f, -2f, 0f);// centre of level
                 break;
         }
-        */
+
         //Cherry bin = new Cherry(cherry.transform, spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f));
-        
-        cherryObject = (GameObject)Instantiate(cherry, spawnPoints[areaNum, 0], Quaternion.identity);
-        moveCherry(cherryObject.transform, /*spawnCor*/spawnPoints[areaNum, 0], spawnPoints[areaNum, 1]);
-        Invoke("destroyCherry", 9f);
-        
-        
+
+        //cherryObject = (GameObject)Instantiate(cherry, spawnPoints[areaNum, 0], Quaternion.identity);
+        //moveCherry(cherryObject.transform, /*spawnCor*/spawnPoints[areaNum, 0], spawnPoints[areaNum, 1]);
+
+        //cherryObject = (GameObject)Instantiate(cherry, spawnCor, Quaternion.identity);
+        //moveCherry(cherryObject.transform, /*spawnCor*/spawnCor, spawnPoints[areaNum, 1]);
+
+        //Invoke("destroyCherry", 9f);
+
+        Debug.Log(spawnCor);
+        Debug.DrawLine(spawnCor, centre, Color.white, 2f);// 9f
+        Debug.DrawLine(centre, new Vector3(-spawnCor.x, -spawnCor.y, 0f), Color.white, 2f);
+
         //bin.moveCherry();
         //isSpawning = false;
 

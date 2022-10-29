@@ -21,12 +21,21 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 wallScale = new Vector3(0.5f, 0.5f, 0f);
     private Vector3 palletScale = new Vector3(0.4f, 0.4f, 0f);
 
+    /*
     private Vector3 printCoordinate = new Vector3(-22.5f, 12.5f, 0f);
 
     private Vector3 topLeftInitial = new Vector3(-22.5f, 12.5f, 0f);
     private Vector3 topRightInitial = new Vector3(-8.5f, 12.5f, 0f);
     private Vector3 bottomLeftInitial = new Vector3(-22.5f, -2.5f, 0f);// (top right corner of bottom left quadrant is (-9.5, -2.5)
     private Vector3 bottomRightInitial = new Vector3(-8.5f, -2.5f, 0f);
+    */
+
+    private Vector3 printCoordinate = new Vector3(-13.5f, 14.5f, 0f);
+
+    private Vector3 topLeftInitial = new Vector3(-13.5f, 14.5f, 0f);
+    private Vector3 topRightInitial = new Vector3(0.5f, 14.5f, 0f);
+    private Vector3 bottomLeftInitial = new Vector3(-13.5f, -0.5f, 0f);// (top right corner of bottom left quadrant is (-9.5, -2.5)
+    private Vector3 bottomRightInitial = new Vector3(0.5f, -0.5f, 0f);
 
     public int[,] levelMap = {// max X is 15, max Y is 14, 
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
