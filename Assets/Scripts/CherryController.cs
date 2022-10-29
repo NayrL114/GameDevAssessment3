@@ -52,7 +52,7 @@ public class CherryController : MonoBehaviour
             spawnTimer = 0;
         }
 
-        if (activeTween != null)
+        if (activeTween != null && cherryObject != null)
         {
             float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
             activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
@@ -140,7 +140,7 @@ public class CherryController : MonoBehaviour
     public void clearStuff()
     {
         spawnTimer = 0f;
-        //activeTween = null;
+        activeTween = null;
         //CancelInvoke("destroyCherry");
         destroyCherry();
     }    

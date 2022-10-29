@@ -698,6 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Lives: 3
+  score: 0
 --- !u!1 &298008811
 GameObject:
   m_ObjectHideFlags: 0

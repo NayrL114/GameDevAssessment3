@@ -25,6 +25,12 @@ public class UIManager : MonoBehaviour
     public float ghostTimer;
     public int ghostTimerTxt = 10;
 
+    // countdown timer
+    public float countDown;
+    public string countDownTxt;
+    public Text countDownText;
+    public bool isCountDown = true;
+
     // Text variables
     public Text gameTimerText;
     public Text ghostScareTimerText;
@@ -38,7 +44,7 @@ public class UIManager : MonoBehaviour
     public Vector3 drawCor;
 
     // Reference to PacManager
-    public PacManager pac;
+    public PacManager pacManager;
 
     // Reference to other scripts
     //public InputManager inputManager;
@@ -46,6 +52,9 @@ public class UIManager : MonoBehaviour
     // Reference to PacStudentController & CherryController
     public PacStudentController pacCtrl;
     public CherryController cherryController;
+
+    // number of pallets in level 1
+    public int palletNum = 224;
 
     // buttons
     [SerializeField] public Button levelOneButton;
@@ -70,13 +79,16 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pac = gameObject.GetComponent<PacManager>();        
+        //pac = gameObject.GetComponent<PacManager>();        
         //inputManager = gameObject.GetComponent<InputManager>();
         pacCtrl = gameObject.GetComponent<PacStudentController>();
+        pacCtrl.uimanager = this;
         cherryController = gameObject.GetComponent<CherryController>();
 
         levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
         levelOneButton.onClick.AddListener(LoadLevelOne);
+
+        countDownText = GameObject.FindWithTag("CountDown").GetComponent<Text>();
 
         drawCor = new Vector3(28f, 28f, 0f);
 
@@ -86,54 +98,59 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (gameTimerText != null && ghostScareTimerText != null)
-        {
-            // Timer Stuffs
-            gameTimer += Time.deltaTime;
-            ghostTimer += Time.deltaTime;
-
-            //ghost scare timer stuff
-            if (ghostTimer >= 1 /* && GhostState == Scared*/)
+        //if (!isCountDown)
+        //{
+            if (gameTimerText != null && ghostScareTimerText != null && scoreText != null)
             {
-                //Debug.Log(ghostTimerTxt);
-                ghostScareTimerText.text = "" + ghostTimerTxt;
-                ghostTimerTxt--;
-                ghostTimer = 0;
+                // Timer Stuffs
+                gameTimer += Time.deltaTime;
+                ghostTimer += Time.deltaTime;
+
+                //ghost scare timer stuff
+                if (ghostTimer >= 1 /* && GhostState == Scared*/)
+                {
+                    //Debug.Log(ghostTimerTxt);
+                    ghostScareTimerText.text = "" + ghostTimerTxt;
+                    ghostTimerTxt--;
+                    ghostTimer = 0;
+                }
+
+                if (ghostTimerTxt < 0)
+                {
+                    ghostTimerTxt = 10;
+                }
+
+                // 00:00:00 timer stuff
+                // Below timer implementation is from https://answers.unity.com/questions/514378/timer-in-milliseconds-to-mmssms.html
+                gameTimerMin = (int)gameTimer / 60;
+                gameTimerSec = (int)gameTimer % 60;
+                //gameTimerMilSec = ((int)gameTimer * 1000) % 1000;
+                fraction = gameTimer * 1000;
+                //Debug.Log(fraction);
+                gameTimerMilSec = (int)(fraction % 1000);
+                // Above codes are from a timer implementation guide found on UnityForum, linked in above commment.         
+
+                MilSecTxt = ConvertMilSecTxt(gameTimerMilSec);
+                SecTxt = ChangeTimeToTxt(gameTimerSec);
+                MinTxt = ChangeTimeToTxt(gameTimerMin);
+
+                //if (gameTimerSec < 10)
+
+                //gameTimerText.text = gameTimerMin + ":" + gameTimerSec + ":" + gameTimerMilSec; //Time.deltaTime; //gameTimer
+                gameTimerText.text = MinTxt + ":" + SecTxt + ":" + MilSecTxt; //Time.deltaTime; //gameTimer;
+                                                                              //
+                scoreText.text = "" + pacManager.Score;
             }
+        //}        
 
-            if (ghostTimerTxt < 0)
-            {
-                ghostTimerTxt = 10;                
-            }
-
-            // 00:00:00 timer stuff
-            // Below timer implementation is from https://answers.unity.com/questions/514378/timer-in-milliseconds-to-mmssms.html
-            gameTimerMin = (int)gameTimer / 60;
-            gameTimerSec = (int)gameTimer % 60;
-            //gameTimerMilSec = ((int)gameTimer * 1000) % 1000;
-            fraction = gameTimer * 1000;
-            //Debug.Log(fraction);
-            gameTimerMilSec = (int)(fraction % 1000);
-            // Above codes are from a timer implementation guide found on UnityForum, linked in above commment.         
-
-            MilSecTxt = ConvertMilSecTxt(gameTimerMilSec);
-            SecTxt = ChangeTimeToTxt(gameTimerSec);
-            MinTxt = ChangeTimeToTxt(gameTimerMin);
-
-            //if (gameTimerSec < 10)
-
-            //gameTimerText.text = gameTimerMin + ":" + gameTimerSec + ":" + gameTimerMilSec; //Time.deltaTime; //gameTimer
-            gameTimerText.text = MinTxt + ":" + SecTxt + ":" + MilSecTxt; //Time.deltaTime; //gameTimer;
-            //
-        }
+        
 
     }// end of Update()
 
     public void DrawLives()
     {
         Debug.Log(Screen.currentResolution);
-        for (int i = 0; i < pac.Lives; i++)
+        for (int i = 0; i < pacManager.Lives; i++)
         {
             Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
             drawCor.x += 40f;
@@ -148,8 +165,12 @@ public class UIManager : MonoBehaviour
         levelOneButton.onClick.RemoveListener(LoadLevelOne);
         //levelOneButton.onClick.GetPersistentEventCount();
 
+        //startCountDown();
+
         GameManager.currentGameState = GameManager.GameState.LevelOne;
         SceneManager.LoadScene(1);
+        //pauseGame();
+        //Invoke("resumeGame", 4f);
         //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         //SceneManager.sceneLoaded += OnSceneLoad;
         //SceneManager.sceneLoaded += OnSceneLoad;
@@ -158,7 +179,7 @@ public class UIManager : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoad;
             hasbeenloaded = true;
         }
-    }
+    }    
 
     public void LoadLevelTwo()
     {
@@ -180,6 +201,31 @@ public class UIManager : MonoBehaviour
         //SceneManager.sceneLoaded += OnSceneLoad;
         //SceneManager.sceneLoaded += OnSceneLoad;
     }
+
+    public void resumeGame()
+    {
+        Time.timeScale = 1f;
+    }
+
+    public void pauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    /*
+    public void startCountDown()
+    {
+        if (countDownTxt != null)
+        {
+            countDown += Time.deltaTime;
+            if (countDown >= 1)
+            {
+                Debug.Log("countDown " + countDown);
+                countDown = 0;
+            }
+        }
+    }
+    */
 
     public void resetTimers()
     {
@@ -218,6 +264,7 @@ public class UIManager : MonoBehaviour
             ghostScareTimerText = GameObject.FindWithTag("ScareTimer").GetComponent<Text>();
             hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
             ghostScareTimerText.text = "" + ghostTimerTxt;
+            scoreText = GameObject.FindWithTag("Score").GetComponent<Text>();
             //pac = gameObject.GetComponent<PacManager>();
 
             // Help the InputManager to get stuffs in level 1
@@ -237,6 +284,10 @@ public class UIManager : MonoBehaviour
             //cherryController.enabled = !cherryController.enabled;
             cherryController.enabled = true;
             cherryController.cherrySpeed = 10f;
+
+            // get the pacManager, and assign a cherryControlled into pacManager
+            pacManager = GameObject.FindWithTag("Player").GetComponent<PacManager>();
+            //pacManager.cherryCtrl = gameObject.GetComponent<CherryController>();
 
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);

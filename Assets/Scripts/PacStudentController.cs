@@ -32,6 +32,9 @@ public class PacStudentController : MonoBehaviour
     // Reference to pac in level
     public GameObject pac;
 
+    // Reference to UIManager
+    public UIManager uimanager;
+
     private bool playOnce = false;
     private bool wallAhead = false;
 
@@ -116,196 +119,200 @@ public class PacStudentController : MonoBehaviour
         //Debug.Log(pac != null);
         if (pac != null) // making sure that these codes are not called in main menu
         {
-            //currentInput = lastInput;
-            // If users provide input
-            // https://answers.unity.com/questions/658721/print-what-button-was-just-pressed.html
-            if (Input.anyKeyDown)
-            {
-
-                print(Input.inputString);
-
-            }
-            //
-
-            if (Input.GetKeyDown(KeyCode.W))// Up
-            {
-                lastInput = 1;
-                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+            //if (!uimanager.isCountDown)
+            //{
+                //currentInput = lastInput;
+                // If users provide input
+                // https://answers.unity.com/questions/658721/print-what-button-was-just-pressed.html
+                if (Input.anyKeyDown)
                 {
-                    checkMovementByDigit(currentInput);
+
+                    print(Input.inputString);
+
                 }
-                //currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
-                */
-                if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)))// && pacMovement.activeTween == null)
+                //
+
+                if (Input.GetKeyDown(KeyCode.W))// Up
                 {
-                    // pacMovement.SetMovementDirection(lastInput);
-                    currentInput = lastInput;
+                    lastInput = 1;
+                    /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+                    {
+                        checkMovementByDigit(currentInput);
+                    }
                     //currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
-                }
+                    */
+                    if (checkMovement(new Vector2(currentPos.x - 1, currentPos.y)))// && pacMovement.activeTween == null)
+                    {
+                        // pacMovement.SetMovementDirection(lastInput);
+                        currentInput = lastInput;
+                        //currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
+                    }
 
-            }
-            else if (Input.GetKeyDown(KeyCode.D))// Right
-            {
-                lastInput = 2;
-                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
-                {
-                    checkMovementByDigit(currentInput);
                 }
-                //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
-                */
-                if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)))// && pacMovement.activeTween == null)
+                else if (Input.GetKeyDown(KeyCode.D))// Right
                 {
-                    //pacMovement.SetMovementDirection(lastInput);
-                    currentInput = lastInput;
+                    lastInput = 2;
+                    /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+                    {
+                        checkMovementByDigit(currentInput);
+                    }
                     //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    */
+                    if (checkMovement(new Vector2(currentPos.x, currentPos.y + 1)))// && pacMovement.activeTween == null)
+                    {
+                        //pacMovement.SetMovementDirection(lastInput);
+                        currentInput = lastInput;
+                        //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    }
+
+                }
+                else if (Input.GetKeyDown(KeyCode.S))// Down
+                {
+                    lastInput = 3;
+                    /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+                    {
+                        checkMovementByDigit(currentInput);
+                    }
+                    //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+                    */
+                    if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)))// && pacMovement.activeTween == null)
+                    {
+                        //pacMovement.SetMovementDirection(lastInput);
+                        currentInput = lastInput;
+                        //currentPos = new Vector2(currentPos.x + 1, currentPos.y);
+                    }
+
+                }
+                else if (Input.GetKeyDown(KeyCode.A))// Left
+                {
+                    lastInput = 4;
+                    /*
+                    if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+                    {
+                        checkMovementByDigit(currentInput);
+                    }
+                    //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                    */
+                    if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)))// && pacMovement.activeTween == null)
+                    {
+                        //pacMovement.SetMovementDirection(lastInput);
+                        currentInput = lastInput;
+                        //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
+                    }
+
                 }
 
-            }
-            else if (Input.GetKeyDown(KeyCode.S))// Down
-            {
-                lastInput = 3;
-                /*if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
-                {
-                    checkMovementByDigit(currentInput);
-                }
-                //currentPos = new Vector2(currentPos.x, currentPos.y + 1);
-                */
-                if (checkMovement(new Vector2(currentPos.x + 1, currentPos.y)))// && pacMovement.activeTween == null)
-                {
-                    //pacMovement.SetMovementDirection(lastInput);
-                    currentInput = lastInput;
-                    //currentPos = new Vector2(currentPos.x + 1, currentPos.y);
-                }
+                //printInput(lastInput);
 
-            }
-            else if (Input.GetKeyDown(KeyCode.A))// Left
-            {
-                lastInput = 4;
-                /*
+                //Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
+
+                //currentInput = lastInput;
+                //bool moveParameter = checkMovementByDigit(lastInput);
+                //Debug.Log(moveParameter);
+                //if (moveParameter == false)
                 if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
                 {
-                    checkMovementByDigit(currentInput);
-                }
-                //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
-                */
-                if (checkMovement(new Vector2(currentPos.x, currentPos.y - 1)))// && pacMovement.activeTween == null)
-                {
-                    //pacMovement.SetMovementDirection(lastInput);
-                    currentInput = lastInput;
-                    //currentPos = new Vector2(currentPos.x, currentPos.y - 1);
-                }
+                    //checkMovementByDigit(currentInput);
 
-            }
-
-            //printInput(lastInput);
-
-            //Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
-
-            //currentInput = lastInput;
-            //bool moveParameter = checkMovementByDigit(lastInput);
-            //Debug.Log(moveParameter);
-            //if (moveParameter == false)
-            if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
-            {
-                //checkMovementByDigit(currentInput);
-                
-                if (!checkMovementByDigit(currentInput) && wallAhead && activeTween == null)
-                {
-                    //Debug.Log("stopping");
-                    if (!playOnce)
+                    if (!checkMovementByDigit(currentInput) && wallAhead && activeTween == null)
                     {
-                        pacHitAudioSource.Play();
-                        wallCollideParticle.Play();
-                        playOnce = true;
+                        //Debug.Log("stopping");
+                        if (!playOnce)
+                        {
+                            pacHitAudioSource.Play();
+                            wallCollideParticle.Play();
+                            playOnce = true;
+                        }
+
                     }
-                    
+                    else
+                    {
+                        // Debug.Log("moving based on currentInput");
+                    }
+
                 }
                 else
                 {
-                   // Debug.Log("moving based on currentInput");
-                }
-                
-            }
-            else
-            {
-                //Debug.Log("moving based on lastInput");
-                currentInput = lastInput;
-            }
-
-            // Below are the code from PacMovement
-
-            if (activeTween != null)
-            {
-                //Debug.Log("moving activeTween");
-                float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
-                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
-
-                // Start playing movement audio. 
-                if (!pacAudioSource.isPlaying)
-                {
-                    //moveAudioSource.loop = true;
-                    pacAudioSource.Play();
+                    //Debug.Log("moving based on lastInput");
+                    currentInput = lastInput;
                 }
 
-                /*
-                if (!dustParticle.activeSelf)
-                {
-                    dustParticle.SetActive(true);
-                }
-                */
-                if (!dustParticle.isPlaying)
+                // Below are the code from PacMovement
+
+                if (activeTween != null)
                 {
                     //Debug.Log("moving activeTween");
-                    dustParticle.Play();
-                }
+                    float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
+                    activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
 
-                if (Vector3.Distance(pac.transform.position, activeTween.EndPos) <= 0.01f)
-                {
-                    
-                    activeTween.Target.position = activeTween.EndPos;
-                    activeTween = null;
-                    /*
-                    moveState++;
-                    if (moveState >= 4)
+                    // Start playing movement audio. 
+                    if (!pacAudioSource.isPlaying)
                     {
-                        moveState = 0;
+                        //moveAudioSource.loop = true;
+                        pacAudioSource.Play();
                     }
-                    SetMovementDirection(moveState);
 
+                    /*
+                    if (!dustParticle.activeSelf)
+                    {
+                        dustParticle.SetActive(true);
+                    }
                     */
+                    if (!dustParticle.isPlaying)
+                    {
+                        //Debug.Log("moving activeTween");
+                        dustParticle.Play();
+                    }
+
+                    if (Vector3.Distance(pac.transform.position, activeTween.EndPos) <= 0.01f)
+                    {
+
+                        activeTween.Target.position = activeTween.EndPos;
+                        activeTween = null;
+                        /*
+                        moveState++;
+                        if (moveState >= 4)
+                        {
+                            moveState = 0;
+                        }
+                        SetMovementDirection(moveState);
+
+                        */
+
+                    }
 
                 }
 
-            }
-
-            if (activeTween == null)// && moveAudioSource.isPlaying)
-            {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
-                pacAudioSource.Stop();
-                dustParticle.Stop();
-                //wallCollideParticle.Play();
-                //pacHitAudioSource.Play();
-                //dustParticle.SetActive(false);
-                //pacAnimator.Play("PacStudentIdle");
-                //pacSpRend.sprite = pacIdleSprite;
-                //switch (localMoveState)
-                switch (currentInput)
-                {
-                    case 1:
-                        pacAnimator.Play("PacStudentIdle");
-                        break;
-                    case 2:
-                        pacAnimator.Play("PacStudentIdleRight");
-                        break;
-                    case 3:
-                        pacAnimator.Play("PacStudentIdleDown");
-                        break;
-                    case 4:
-                        pacAnimator.Play("PacStudentIdleLeft");
-                        break;
-                    default:
-                        break;
+                if (activeTween == null)// && moveAudioSource.isPlaying)
+                {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
+                    pacAudioSource.Stop();
+                    dustParticle.Stop();
+                    //wallCollideParticle.Play();
+                    //pacHitAudioSource.Play();
+                    //dustParticle.SetActive(false);
+                    //pacAnimator.Play("PacStudentIdle");
+                    //pacSpRend.sprite = pacIdleSprite;
+                    //switch (localMoveState)
+                    switch (currentInput)
+                    {
+                        case 1:
+                            pacAnimator.Play("PacStudentIdle");
+                            break;
+                        case 2:
+                            pacAnimator.Play("PacStudentIdleRight");
+                            break;
+                        case 3:
+                            pacAnimator.Play("PacStudentIdleDown");
+                            break;
+                        case 4:
+                            pacAnimator.Play("PacStudentIdleLeft");
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
+            //}
+            
         }
 
     }// end of Update()
@@ -482,36 +489,6 @@ public class PacStudentController : MonoBehaviour
         
         return false;
     }// end of checkMovementByDigit(int input)
-
-    private string printInput(int input)
-    {
-        switch (input)
-        {
-            case 1:
-                //Debug.Log("Pressed: W");
-                return "W";
-                //break;
-            //break;
-            case 2:
-                //Debug.Log("Pressed: D");
-                return "D";
-                //break;
-            //break;
-            case 3:
-                //Debug.Log("Pressed: S");
-                return "S";
-                //break;
-            //break;
-            case 4:
-                //Debug.Log("Pressed: A");
-                return "A"; 
-                //break;
-            //break;
-            default:
-                return "None";
-                //break;
-        }
-    }
 
     public void SetMovementDirection(int moveState)// consider change to switch(moveState)
     {// smaller move time value means faster speed. 

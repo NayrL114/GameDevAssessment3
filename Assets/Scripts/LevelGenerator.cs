@@ -37,6 +37,8 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 bottomLeftInitial = new Vector3(-13.5f, -0.5f, 0f);// (top right corner of bottom left quadrant is (-9.5, -2.5)
     private Vector3 bottomRightInitial = new Vector3(0.5f, -0.5f, 0f);
 
+    public int palletNum = 0;
+
     public int[,] levelMap = {// max X is 15, max Y is 14, 
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
@@ -73,6 +75,8 @@ public class LevelGenerator : MonoBehaviour
         //Debug.Log("Printing bottom-left quadrant");
         printCoordinate = bottomLeftInitial;
         BottomLeftQuadrant();
+
+        Debug.Log("number of pallets are: " + palletNum);
     }
 
     // Start is called before the first frame update
@@ -167,6 +171,7 @@ public class LevelGenerator : MonoBehaviour
             //Debug.Log("printing POWERFUL pallet");
             GameObject outputOne = (GameObject)Instantiate(powerPallet, printCoordinate, Quaternion.identity);
             outputOne.transform.localScale = palletScale;
+            palletNum++;
         }
          
         if (spriteID == 5)// normal pallet
@@ -174,7 +179,10 @@ public class LevelGenerator : MonoBehaviour
             //Debug.Log("printing normal pallet");
             GameObject outputTwo = (GameObject)Instantiate(standardPallet, printCoordinate, Quaternion.identity);
             outputTwo.transform.localScale = palletScale;
+            palletNum++;
         }
+
+        //palletNum++;
 
         // Below are commented out old codes
         /*
