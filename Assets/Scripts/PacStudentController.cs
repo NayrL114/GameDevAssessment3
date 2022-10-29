@@ -16,9 +16,11 @@ public class PacStudentController : MonoBehaviour
     public AudioSource pacAudioSource;
     public AudioClip normalClip;
     public AudioClip eatClip;
+    public AudioSource pacHitAudioSource;
 
     // Reference towards particle System for simulating dust
     public ParticleSystem dustParticle;// should be initialised through UIManager, when clicking onto level 1
+    public ParticleSystem wallCollideParticle;
 
     // lastInput and currentInput as required by assessment specification
     public int lastInput;
@@ -30,8 +32,8 @@ public class PacStudentController : MonoBehaviour
     // Reference to pac in level
     public GameObject pac;
 
-    // Rigidbody2D
-    public Rigidbody2D playerRigid;
+    private bool playOnce = false;
+    private bool wallAhead = false;
 
     //public PacMovement pacMovement;// should be initiased through UIManager, when clicking onto level 1. 
 
@@ -205,18 +207,24 @@ public class PacStudentController : MonoBehaviour
             //if (moveParameter == false)
             if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
             {
-                checkMovementByDigit(currentInput);
-                /*
-                if (!checkMovementByDigit(currentInput))
+                //checkMovementByDigit(currentInput);
+                
+                if (!checkMovementByDigit(currentInput) && wallAhead && activeTween == null)
                 {
-                    Debug.Log("stopping");
-                    //dustParticle.Stop();
+                    //Debug.Log("stopping");
+                    if (!playOnce)
+                    {
+                        pacHitAudioSource.Play();
+                        wallCollideParticle.Play();
+                        playOnce = true;
+                    }
+                    
                 }
                 else
                 {
-                    Debug.Log("moving based on currentInput");
+                   // Debug.Log("moving based on currentInput");
                 }
-                */
+                
             }
             else
             {
@@ -274,6 +282,8 @@ public class PacStudentController : MonoBehaviour
             {// if there is really an instance where pacStudent stops moving, pause the movement audio. 
                 pacAudioSource.Stop();
                 dustParticle.Stop();
+                //wallCollideParticle.Play();
+                //pacHitAudioSource.Play();
                 //dustParticle.SetActive(false);
                 //pacAnimator.Play("PacStudentIdle");
                 //pacSpRend.sprite = pacIdleSprite;
@@ -320,7 +330,14 @@ public class PacStudentController : MonoBehaviour
         {
             Debug.Log("die");
         }
-              
+        else if (other.gameObject.tag == "LeftTP")
+        {
+            Debug.Log("LeftTP");
+        }
+        else if (other.gameObject.tag == "RightTP")
+        {
+            Debug.Log("RightTP");
+        }
     }
 
     private bool checkMovement(Vector2 currentPos)
@@ -331,8 +348,8 @@ public class PacStudentController : MonoBehaviour
         {
             //Debug.Log(levelMap[(int)currentPos.x]);
             //Debug.Log(levelMap[(int)currentPos.y]);
-
-            if (levelMap[(int)currentPos.x, (int)currentPos.y] == 5 || levelMap[(int)currentPos.x, (int)currentPos.y] == 6)// || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
+            int nextPos = levelMap[(int)currentPos.x, (int)currentPos.y];
+            if (nextPos == 5 || nextPos == 6)// || levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
             {
                 //Debug.Log("setting first clip");
                 // Put the audio play codes into the section for detecting eating pallet
@@ -342,9 +359,11 @@ public class PacStudentController : MonoBehaviour
                     pacAudioSource.Play();
                 }
                 //
+                playOnce = false;
+                wallAhead = false;
                 return true;
             }
-            else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
+            else if (nextPos == 0)
             {
                 //Debug.Log("setting second clip");
                 // Put the audio play codes into the section for detecting eating pallet
@@ -354,8 +373,26 @@ public class PacStudentController : MonoBehaviour
                     pacAudioSource.Play();
                 }
                 // 
+                playOnce = false;
+                wallAhead = false;
                 return true;
             }
+            else if (nextPos == 1 || nextPos == 2 || nextPos == 3 || nextPos == 4)
+            {
+                /*
+                if (!playOnce && activeTween == null)
+                {
+                    wallCollideParticle.Play();
+                    pacHitAudioSource.Play();
+                    playOnce = true;
+                }
+                */
+                wallAhead = true;
+            }
+
+            //wallCollideParticle.Play();
+            //pacHitAudioSource.Play();
+
             /*
             else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 6)
             {
@@ -426,13 +463,14 @@ public class PacStudentController : MonoBehaviour
                         return true;
                     }
                     break;
-                default:
+                //default:
                     //Debug.Log("returning false on default");
-                    return false;
+                    //return false;
                     //break;
 
             }// end of switch(input)
         }
+
         /*
         else
         {
@@ -441,6 +479,7 @@ public class PacStudentController : MonoBehaviour
         }    
         */
         //Debug.Log("returning false on the end with input: " + input);
+        
         return false;
     }// end of checkMovementByDigit(int input)
 

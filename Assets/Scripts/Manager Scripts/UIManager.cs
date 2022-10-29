@@ -229,6 +229,8 @@ public class UIManager : MonoBehaviour
             pacCtrl.pacAnimator = GameObject.FindWithTag("Player").GetComponent<Animator>();
             pacCtrl.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
             pacCtrl.dustParticle = GameObject.FindWithTag("DustEffect").GetComponent<ParticleSystem>();
+            pacCtrl.wallCollideParticle = GameObject.FindWithTag("WallEffect").GetComponent<ParticleSystem>();
+            pacCtrl.pacHitAudioSource = GameObject.FindWithTag("HitWallAudio").GetComponent<AudioSource>();
 
             // Enable the cherryController attached to Game Manager
             //CherryController cherryController = gameObject.GetComponent<CherryController>();
