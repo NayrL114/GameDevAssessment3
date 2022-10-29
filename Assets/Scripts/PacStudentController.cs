@@ -192,7 +192,7 @@ public class PacStudentController : MonoBehaviour
 
             }
 
-            printInput(lastInput);
+            //printInput(lastInput);
 
             //Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
 
@@ -217,7 +217,7 @@ public class PacStudentController : MonoBehaviour
             }
             else
             {
-                Debug.Log("moving based on lastInput");
+                //Debug.Log("moving based on lastInput");
                 currentInput = lastInput;
             }
 
@@ -296,6 +296,26 @@ public class PacStudentController : MonoBehaviour
         }
 
     }// end of Update()
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("hit something");
+        switch (other.tag)
+        {
+            case "NormalPallet":
+                Debug.Log("normal");
+                break;
+            case "PowerPallet":
+                Debug.Log("power");
+                break;
+            case "CherryPallet":
+                Debug.Log("cherry");
+                break;
+            case "Ghost":
+                Debug.Log("die");
+                break;
+        }
+    }
 
     private bool checkMovement(Vector2 currentPos)
     {
@@ -452,7 +472,7 @@ public class PacStudentController : MonoBehaviour
     {// smaller move time value means faster speed. 
         if (activeTween == null)
         {
-            Debug.Log("Setting direction");
+            //Debug.Log("Setting direction");
             if (moveState == 1) // move up, positive y direction
             {
                 //activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y + 1, 0f), Time.time, 0.5f);

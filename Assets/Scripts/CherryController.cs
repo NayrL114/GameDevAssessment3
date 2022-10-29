@@ -61,7 +61,7 @@ public class CherryController : MonoBehaviour
             {
                 activeTween.Target.position = activeTween.EndPos;
                 activeTween = null;
-                
+                destroyCherry();
             }
         }
         /*
@@ -76,9 +76,9 @@ public class CherryController : MonoBehaviour
 
     private void spawnCherry()
     {
-        int areaNum = Random.Range(1, 5);
-        
+        int areaNum = Random.Range(1, 5);        
         Vector3 spawnCor;
+        Debug.Log(areaNum);
         switch (areaNum)
         {
             case 1:
@@ -110,13 +110,13 @@ public class CherryController : MonoBehaviour
         cherryObject = (GameObject)Instantiate(cherry, spawnCor, Quaternion.identity);
         travelDistance = Vector3.Distance(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f));
 
-        Debug.Log("random cherry spawnpoint is " + spawnCor);
+        //Debug.Log("random cherry spawnpoint is " + spawnCor);
         //Debug.Log("travelDistance is " + travelDistance);
         //Debug.Log("total travel time should be " + (travelDistance / cherrySpeed));
 
         moveCherry(cherryObject.transform, /*spawnCor*/spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f));
 
-        Invoke("destroyCherry", 9.99f);
+        //Invoke("destroyCherry", 9.99f);
 
         //Debug.Log(spawnCor);        
         //Debug.DrawLine(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f), Color.white, 2f);// 9f
@@ -132,7 +132,7 @@ public class CherryController : MonoBehaviour
     public void destroyCherry()
     {
         Destroy(cherryObject);
-        activeTween = null;
+        //activeTween = null;
         
         //Debug.Log("cherry should be destroyed now");
     }    
@@ -141,7 +141,7 @@ public class CherryController : MonoBehaviour
     {
         spawnTimer = 0f;
         //activeTween = null;
-        CancelInvoke("destroyCherry");
+        //CancelInvoke("destroyCherry");
         destroyCherry();
     }    
 
