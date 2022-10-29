@@ -12,6 +12,8 @@ public class CherryController : MonoBehaviour
     private bool isSpawning;
     public float spawnTimer = 0f;    
     public Tween activeTween;
+    public float cherrySpeed = 10f;
+    public float travelDistance;
 
     //public Vector3 centre = new Vector3(-9f, -2f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
     public Vector3 centre = new Vector3(0f, 0f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
@@ -44,7 +46,7 @@ public class CherryController : MonoBehaviour
 
         // spawning cherry every 10 seconds
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= 3f)// 10f
+        if (spawnTimer >= 10f)// 10f
         {
             spawnCherry();
             spawnTimer = 0;
@@ -80,19 +82,19 @@ public class CherryController : MonoBehaviour
         switch (areaNum)
         {
             case 1:
-                spawnCor = new Vector3(Random.Range(20f, 21f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the righter area
+                spawnCor = new Vector3(Random.Range(28f, 39f), Random.Range(-16f, 16f), 0f);// roughly the righter area
                 //spawnCor = spawnPoints[0, 0];// N to S
                 break;
             case 2:
-                spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(15f - 9f, 16f - 2f), 0f);// roughly the upper area
+                spawnCor = new Vector3(Random.Range(-28f, 28f), Random.Range(17f, 18f), 0f);// roughly the upper area
                 //spawnCor = spawnPoints[1, 0];// N to S
                 break;
             case 3:
-                spawnCor = new Vector3(Random.Range(-39f, -38f), Random.Range(-20f - 9f, 15f - 2f), 0f);// roughly the lefter area
+                spawnCor = new Vector3(Random.Range(-28f, -39f), Random.Range(-16f, 16f), 0f);// roughly the lefter area
                 //spawnCor = spawnPoints[2, 0];// N to S
                 break;
             case 4:
-                spawnCor = new Vector3(Random.Range(-38f, 21f), Random.Range(-21f - 9f, -20f - 2f), 0f);// roughly the down area
+                spawnCor = new Vector3(Random.Range(-28f, 28f), Random.Range(-17f, -18f), 0f);// roughly the down area
                 //spawnCor = spawnPoints[3, 0];// N to S
                 break;
             default:
@@ -105,14 +107,21 @@ public class CherryController : MonoBehaviour
         //cherryObject = (GameObject)Instantiate(cherry, spawnPoints[areaNum, 0], Quaternion.identity);
         //moveCherry(cherryObject.transform, /*spawnCor*/spawnPoints[areaNum, 0], spawnPoints[areaNum, 1]);
 
-        //cherryObject = (GameObject)Instantiate(cherry, spawnCor, Quaternion.identity);
-        //moveCherry(cherryObject.transform, /*spawnCor*/spawnCor, spawnPoints[areaNum, 1]);
+        cherryObject = (GameObject)Instantiate(cherry, spawnCor, Quaternion.identity);
+        travelDistance = Vector3.Distance(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f));
 
-        //Invoke("destroyCherry", 9f);
+        Debug.Log("random cherry spawnpoint is " + spawnCor);
+        //Debug.Log("travelDistance is " + travelDistance);
+        //Debug.Log("total travel time should be " + (travelDistance / cherrySpeed));
 
-        Debug.Log(spawnCor);
-        Debug.DrawLine(spawnCor, centre, Color.white, 2f);// 9f
-        Debug.DrawLine(centre, new Vector3(-spawnCor.x, -spawnCor.y, 0f), Color.white, 2f);
+        moveCherry(cherryObject.transform, /*spawnCor*/spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f));
+
+        Invoke("destroyCherry", 9.99f);
+
+        //Debug.Log(spawnCor);        
+        //Debug.DrawLine(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f), Color.white, 2f);// 9f
+        //Debug.Log(Vector3.Distance(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f)));
+        //Debug.Log(Vector3.Distance(spawnCor, new Vector3(-spawnCor.x, -spawnCor.y, 0f)) / cherrySpeed);
 
         //bin.moveCherry();
         //isSpawning = false;
@@ -139,7 +148,9 @@ public class CherryController : MonoBehaviour
     public void moveCherry(Transform transform, Vector3 startPoint, Vector3 endPoint)
     {
         //activeTween = new Tween(gameObject, startPoint, endPoint, Time.time, 3f);
-        activeTween = new Tween(transform, startPoint, endPoint, Time.time, 8f);
+        //activeTween = new Tween(transform, startPoint, endPoint, Time.time, 8f);
+        activeTween = new Tween(transform, startPoint, endPoint, Time.time, /*Vector3.Distance(startPoint, endPoint)*/ travelDistance / cherrySpeed);
+        
     }
 
     

@@ -234,6 +234,7 @@ public class UIManager : MonoBehaviour
             //CherryController cherryController = gameObject.GetComponent<CherryController>();
             //cherryController.enabled = !cherryController.enabled;
             cherryController.enabled = true;
+            cherryController.cherrySpeed = 10f;
 
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);

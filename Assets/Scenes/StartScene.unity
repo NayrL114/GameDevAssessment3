@@ -5996,6 +5996,8 @@ MonoBehaviour:
   cherryObject: {fileID: 0}
   score: 10
   spawnTimer: 0
+  cherrySpeed: 10
+  travelDistance: 0
   centre: {x: -9, y: -2, z: 0}
 --- !u!114 &1022001100
 MonoBehaviour:
