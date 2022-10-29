@@ -30,6 +30,9 @@ public class PacStudentController : MonoBehaviour
     // Reference to pac in level
     public GameObject pac;
 
+    // Rigidbody2D
+    public Rigidbody2D playerRigid;
+
     //public PacMovement pacMovement;// should be initiased through UIManager, when clicking onto level 1. 
 
     // Change the clip when pac eats something. 
@@ -297,24 +300,27 @@ public class PacStudentController : MonoBehaviour
 
     }// end of Update()
 
+    // Collision handling codes is in CollisionManager.cs
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("hit something");
-        switch (other.tag)
+        Debug.Log(other.gameObject.tag);    
+        if (other.gameObject.tag == "NormalPallet") //other.gameObject.CompareTag("PowerPallet")
         {
-            case "NormalPallet":
-                Debug.Log("normal");
-                break;
-            case "PowerPallet":
-                Debug.Log("power");
-                break;
-            case "CherryPallet":
-                Debug.Log("cherry");
-                break;
-            case "Ghost":
-                Debug.Log("die");
-                break;
+            Debug.Log("normal");
         }
+        else if (other.gameObject.tag == "PowerPallet")
+        {
+            Debug.Log("power");
+        }
+        else if (other.gameObject.tag == "CherryPallet")
+        {
+            Debug.Log("cherry");
+        }
+        else if (other.gameObject.tag == "Ghost")
+        {
+            Debug.Log("die");
+        }
+              
     }
 
     private bool checkMovement(Vector2 currentPos)

@@ -165,14 +165,14 @@ public class LevelGenerator : MonoBehaviour
         if (spriteID == 6)// power pallet
         {
             //Debug.Log("printing POWERFUL pallet");
-            GameObject outputOne = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
+            GameObject outputOne = (GameObject)Instantiate(powerPallet, printCoordinate, Quaternion.identity);
             outputOne.transform.localScale = palletScale;
         }
          
         if (spriteID == 5)// normal pallet
         {
             //Debug.Log("printing normal pallet");
-            GameObject outputTwo = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
+            GameObject outputTwo = (GameObject)Instantiate(standardPallet, printCoordinate, Quaternion.identity);
             outputTwo.transform.localScale = palletScale;
         }
 
