@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 
+    public static UIManager instance = null;
+
     // main timer that stacks Time.deltaTime
     public float gameTimer;
 
@@ -45,6 +47,26 @@ public class UIManager : MonoBehaviour
     public PacStudentController pacCtrl;
     public CherryController cherryController;
 
+    // buttons
+    [SerializeField] public Button levelOneButton;
+    [SerializeField] public Button exitButton;
+
+    // bool for onSceneLoad
+    private bool hasbeenloaded = false;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +75,12 @@ public class UIManager : MonoBehaviour
         pacCtrl = gameObject.GetComponent<PacStudentController>();
         cherryController = gameObject.GetComponent<CherryController>();
 
+        levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
+        levelOneButton.onClick.AddListener(LoadLevelOne);
+
         drawCor = new Vector3(28f, 28f, 0f);
+
+        //SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     // Update is called once per frame
@@ -116,10 +143,21 @@ public class UIManager : MonoBehaviour
 
     public void LoadLevelOne()
     {
+        Debug.Log("opening level 1");
+        levelOneButton.onClick.GetPersistentEventCount();
+        levelOneButton.onClick.RemoveListener(LoadLevelOne);
+        levelOneButton.onClick.GetPersistentEventCount();
+
         GameManager.currentGameState = GameManager.GameState.LevelOne;
-        SceneManager.LoadSceneAsync(1);
-        SceneManager.sceneLoaded += OnSceneLoad;
+        SceneManager.LoadScene(1);
+        //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         //SceneManager.sceneLoaded += OnSceneLoad;
+        //SceneManager.sceneLoaded += OnSceneLoad;
+        if (!hasbeenloaded)
+        {
+            SceneManager.sceneLoaded += OnSceneLoad;
+            hasbeenloaded = true;
+        }
     }
 
     public void LoadLevelTwo()
@@ -130,34 +168,53 @@ public class UIManager : MonoBehaviour
 
     public void ExitGame()
     {
+        Debug.Log("returning to main menu");
+        exitButton.onClick.GetPersistentEventCount();
+        exitButton.onClick.RemoveListener(ExitGame);
+        exitButton.onClick.GetPersistentEventCount();
+
         GameManager.currentGameState = GameManager.GameState.Start;
+        //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        
         SceneManager.LoadScene(0);
-        SceneManager.sceneLoaded += OnSceneLoad;
         //SceneManager.sceneLoaded += OnSceneLoad;
+        //SceneManager.sceneLoaded += OnSceneLoad;
+    }
+
+    public void resetTimers()
+    {
+        gameTimer = 0;
+        ghostTimer = 0;
     }
     
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex == 0)
         {
+            resetTimers();
+
             Debug.Log("Start scene is called. ");
             //Destroy(gameObject);
             //cherryController.enabled = !cherryController.enabled;
-            
-            cherryController.enabled = false;
-            if (cherryController.cherryObject != null)
+                        
+            //if (cherryController.cherryObject != null)
+            if (cherryController.enabled)
             {// destroy the stuffs in cherryController so there wont be errors
-                cherryController.destroyCherry();
+                //cherryController.destroyCherry();
                 cherryController.clearStuff();
                 //cherryController.clearTween();
             }
-            
+            cherryController.enabled = false;
+            //Button levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
+            levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
+            levelOneButton.onClick.AddListener(LoadLevelOne);
+
         }
         else if (scene.buildIndex == 1)
         {
             // UI related stuff that is useful in current script
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
-            Button exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
+            exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
             ghostScareTimerText = GameObject.FindWithTag("ScareTimer").GetComponent<Text>();
             hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
             ghostScareTimerText.text = "" + ghostTimerTxt;

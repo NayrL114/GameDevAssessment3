@@ -101,7 +101,7 @@ public class PacStudentController : MonoBehaviour
     {
         //SetMovementDirection(1);
         //pacSpRend = gameObject.GetComponent<SpriteRenderer>();
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
         //pacAudioSource = gameObject.GetComponent<AudioSource>();// get it from UIManager
     }
 

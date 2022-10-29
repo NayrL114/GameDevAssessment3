@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 213816936}
   m_Layer: 5
   m_Name: Level1Button
-  m_TagString: Untagged
+  m_TagString: LevelOneButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -327,19 +327,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 213816937}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1022001096}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: LoadLevelOne
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &213816937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5965,6 +5953,8 @@ MonoBehaviour:
   pac: {fileID: 0}
   pacCtrl: {fileID: 0}
   cherryController: {fileID: 0}
+  levelOneButton: {fileID: 0}
+  exitButton: {fileID: 0}
 --- !u!114 &1022001097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6005,6 +5995,7 @@ MonoBehaviour:
   cherry: {fileID: 4291235734562422265, guid: 23ff219a7e6f48b4db6696f135e07a3c, type: 3}
   cherryObject: {fileID: 0}
   score: 10
+  spawnTimer: 0
   centre: {x: -9, y: -2, z: 0}
 --- !u!114 &1022001100
 MonoBehaviour:

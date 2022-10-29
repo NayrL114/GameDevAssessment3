@@ -6,12 +6,11 @@ public class CherryController : MonoBehaviour
 {
 
     public GameObject cherry;
-    public GameObject cherryObject;
-    
+    public GameObject cherryObject;    
 
     public int score = 10;
     private bool isSpawning;
-    private float spawnTimer = 0f;    
+    public float spawnTimer = 0f;    
     public Tween activeTween;
 
     public Vector3 centre = new Vector3(-9f, -2f, 0f);// 45.5 // ADD 25? Add Y if going up, add X if going right, and magnitude is 17.5
@@ -37,6 +36,10 @@ public class CherryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //Debug.Log(activeTween == null);
+        //Debug.Log("deltaTime is" + Time.deltaTime);
+
         // spawning cherry every 10 seconds
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= 10f)
@@ -112,13 +115,16 @@ public class CherryController : MonoBehaviour
     {
         Destroy(cherryObject);
         activeTween = null;
+        
         //Debug.Log("cherry should be destroyed now");
     }    
 
     public void clearStuff()
     {
-        spawnTimer = 0;
-        activeTween = null;
+        spawnTimer = 0f;
+        //activeTween = null;
+        CancelInvoke("destroyCherry");
+        destroyCherry();
     }    
 
     public void moveCherry(Transform transform, Vector3 startPoint, Vector3 endPoint)

@@ -50,18 +50,18 @@ public class LevelGenerator : MonoBehaviour
     {
         // Disabling manual layout at the start of play
         //ManualLayoutMap.SetActive(false);
-        Debug.Log("Array length is " + levelMap.Length + " " + levelMap.GetLength(0));
+        //Debug.Log("Array length is " + levelMap.Length + " " + levelMap.GetLength(0));
 
-        Debug.Log("Printing top-left quadrant");
+        //Debug.Log("Printing top-left quadrant");
         printCoordinate = topLeftInitial;
         TopLeftQuadrant();
-        Debug.Log("Printing top-right quadrant");
+        //Debug.Log("Printing top-right quadrant");
         printCoordinate = topRightInitial;
         TopRightQuadrant();
-        Debug.Log("Printing bottom-right quadrant");
+        //Debug.Log("Printing bottom-right quadrant");
         printCoordinate = bottomRightInitial;
         BottomRightQuadrant();
-        Debug.Log("Printing bottom-left quadrant");
+        //Debug.Log("Printing bottom-left quadrant");
         printCoordinate = bottomLeftInitial;
         BottomLeftQuadrant();
     }
@@ -84,8 +84,8 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelMap.GetLength(0) - 1; y++)
             {
-                Debug.Log("current xy is " + x + " " + y);
-                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                //Debug.Log("current xy is " + x + " " + y);
+                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //RotateSprite(levelMap[x, y], x, y)
                 DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
                 
@@ -102,8 +102,8 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = levelMap.GetLength(0) - 2; y >= 0; y--)
             {
-                Debug.Log("current xy is " + x + " " + y);
-                Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
+                //Debug.Log("current xy is " + x + " " + y);
+                //Debug.Log("Position in multidimentional array at [" + x + ", " + y + "] is " + levelMap[x, y]);
                 //DrawSprite(levelMap[x, y], 0f);
                 DrawSprite(levelMap[x, y]/*, RotateSprite(levelMap[x, y], x, y)*/);
                 
@@ -155,14 +155,14 @@ public class LevelGenerator : MonoBehaviour
     {
         if (spriteID == 6)// power pallet
         {
-            Debug.Log("printing POWERFUL pallet");
+            //Debug.Log("printing POWERFUL pallet");
             GameObject outputOne = Instantiate(powerPallet, printCoordinate, Quaternion.identity);
             outputOne.transform.localScale = palletScale;
         }
          
         if (spriteID == 5)// normal pallet
         {
-            Debug.Log("printing normal pallet");
+            //Debug.Log("printing normal pallet");
             GameObject outputTwo = Instantiate(standardPallet, printCoordinate, Quaternion.identity);
             outputTwo.transform.localScale = palletScale;
         }
