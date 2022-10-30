@@ -33,7 +33,7 @@ public class PacStudentController : MonoBehaviour
     public GameObject pac;
 
     // Reference to UIManager
-    public UIManager uimanager;
+    //public UIManager uimanager;
 
     private bool playOnce = false;
     private bool wallAhead = false;

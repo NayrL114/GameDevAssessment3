@@ -28,8 +28,9 @@ public class UIManager : MonoBehaviour
     // countdown timer
     public float countDown;
     public string countDownTxt;
+    public int actualCountdown = 4;
     public Text countDownText;
-    public bool isCountDown = true;
+    public bool isPause = false;
 
     // Text variables
     public Text gameTimerText;
@@ -55,6 +56,10 @@ public class UIManager : MonoBehaviour
 
     // number of pallets in level 1
     public int palletNum = 224;
+
+    // loadingScreen
+    public Image loadingPanel;
+    public RectTransform loadingPanelT;
 
     // buttons
     [SerializeField] public Button levelOneButton;
@@ -82,7 +87,7 @@ public class UIManager : MonoBehaviour
         //pac = gameObject.GetComponent<PacManager>();        
         //inputManager = gameObject.GetComponent<InputManager>();
         pacCtrl = gameObject.GetComponent<PacStudentController>();
-        pacCtrl.uimanager = this;
+        //pacCtrl.uimanager = this;
         cherryController = gameObject.GetComponent<CherryController>();
 
         levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
@@ -92,14 +97,18 @@ public class UIManager : MonoBehaviour
 
         drawCor = new Vector3(28f, 28f, 0f);
 
+        loadingPanelT.sizeDelta = new Vector2(Screen.width, Screen.height);
+
+        loadingPanel.enabled = false;
+
         //SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (!isCountDown)
-        //{
+        if (!isPause)
+        {
             if (gameTimerText != null && ghostScareTimerText != null && scoreText != null)
             {
                 // Timer Stuffs
@@ -141,8 +150,43 @@ public class UIManager : MonoBehaviour
                                                                               //
                 scoreText.text = "" + pacManager.Score;
             }
-        //}        
+        }
+        else
+        {
+            //Debug.Log("check 1");
+            
+            
+            if (countDownText != null)
+            {
+                //Debug.Log("check 2");
+                countDown += Time.deltaTime; 
+                if (countDown >= 1)
+                {
+                    //Debug.Log("countDown " + actualCountdown);
+                    
+                    actualCountdown--;
+                    countDownText.text = "" + actualCountdown;
+                    countDown = 0;
+                }
 
+                if (actualCountdown == 0)
+                {
+                    countDownText.text = "Go!";
+                    //Debug.Log("Go");
+                }
+
+                if (actualCountdown < 0)
+                {
+                    countDownText.text = "";
+
+                    isPause = false;
+                    loadingPanel.enabled = false;
+
+                    cherryController.enabled = true;
+                    pacCtrl.enabled = true;
+                }
+            }
+        }
         
 
     }// end of Update()
@@ -165,7 +209,7 @@ public class UIManager : MonoBehaviour
         levelOneButton.onClick.RemoveListener(LoadLevelOne);
         //levelOneButton.onClick.GetPersistentEventCount();
 
-        //startCountDown();
+        
 
         GameManager.currentGameState = GameManager.GameState.LevelOne;
         SceneManager.LoadScene(1);
@@ -179,7 +223,9 @@ public class UIManager : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoad;
             hasbeenloaded = true;
         }
-    }    
+
+        //startCountDown();
+    }
 
     public void LoadLevelTwo()
     {
@@ -211,26 +257,19 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 0f;
     }
-
-    /*
+    
     public void startCountDown()
     {
-        if (countDownTxt != null)
-        {
-            countDown += Time.deltaTime;
-            if (countDown >= 1)
-            {
-                Debug.Log("countDown " + countDown);
-                countDown = 0;
-            }
-        }
+        
     }
-    */
+    
 
     public void resetTimers()
     {
         gameTimer = 0;
         ghostTimer = 0;
+        countDown = 0;
+        actualCountdown = 4;
     }
     
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
@@ -251,6 +290,7 @@ public class UIManager : MonoBehaviour
                 //cherryController.clearTween();
             }
             cherryController.enabled = false;
+            pacCtrl.enabled = false;
             //Button levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
             levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
             levelOneButton.onClick.AddListener(LoadLevelOne);
@@ -282,7 +322,8 @@ public class UIManager : MonoBehaviour
             // Enable the cherryController attached to Game Manager
             //CherryController cherryController = gameObject.GetComponent<CherryController>();
             //cherryController.enabled = !cherryController.enabled;
-            cherryController.enabled = true;
+
+            //cherryController.enabled = true;
             cherryController.cherrySpeed = 10f;
 
             // get the pacManager, and assign a cherryControlled into pacManager
@@ -294,6 +335,9 @@ public class UIManager : MonoBehaviour
 
             // Drawing the live counters. 
             DrawLives();
+                        
+            loadingPanel.enabled = true;            
+            isPause = true;
         }
     }    
 

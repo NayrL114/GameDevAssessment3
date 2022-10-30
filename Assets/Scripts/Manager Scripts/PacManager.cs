@@ -19,7 +19,7 @@ public class PacManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(palletNum);
+        //Debug.Log(palletNum);
         if (palletNum == 0 || Input.GetKeyDown(KeyCode.Escape))
         {
             Time.timeScale = 0f;
@@ -40,21 +40,21 @@ public class PacManager : MonoBehaviour
         //Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "NormalPallet") //other.gameObject.CompareTag("PowerPallet")
         {
-            Debug.Log("normal");
+            //Debug.Log("normal");
             Score += 10;
             palletNum--;
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "PowerPallet")
         {
-            Debug.Log("power");
+            //Debug.Log("power");
             Score += 10;
             palletNum--;
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "CherryPallet")
         {
-            Debug.Log("cherry");
+            //Debug.Log("cherry");
             Score += 100;
             //cherryCtrl.clearStuff();
             Destroy(other.gameObject);
@@ -62,6 +62,14 @@ public class PacManager : MonoBehaviour
         else if (other.gameObject.tag == "Ghost")
         {
             Debug.Log("die");
+        }
+        else if (other.gameObject.tag == "LeftTP")
+        {
+            Debug.Log("LeftTP");
+        }
+        else if (other.gameObject.tag == "RightTP")
+        {
+            Debug.Log("RightTP");
         }
 
     }
