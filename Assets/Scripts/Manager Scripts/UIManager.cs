@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     public string MilSecTxt;
     public string SecTxt;
     public string MinTxt;
+    public float totalTime;// tracking total time spend on playing this level
 
     // ghost scare timer
     public float ghostTimer;
@@ -58,6 +59,7 @@ public class UIManager : MonoBehaviour
     public int palletNum = 224;
 
     // loadingScreen
+    public RectTransform loadingCanvasT;
     public Image loadingPanel;
     public RectTransform loadingPanelT;
 
@@ -97,7 +99,8 @@ public class UIManager : MonoBehaviour
 
         drawCor = new Vector3(28f, 28f, 0f);
 
-        loadingPanelT.sizeDelta = new Vector2(Screen.width, Screen.height);
+        //Debug.Log(Screen.width + " " + Screen.height);
+        loadingPanelT.sizeDelta = new Vector2(loadingCanvasT.rect.width, loadingCanvasT.rect.height);
 
         loadingPanel.enabled = false;
 
@@ -107,6 +110,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            DrawLives();
+        }
+
         if (!isPause)
         {
             if (gameTimerText != null && ghostScareTimerText != null && scoreText != null)
@@ -114,6 +122,9 @@ public class UIManager : MonoBehaviour
                 // Timer Stuffs
                 gameTimer += Time.deltaTime;
                 ghostTimer += Time.deltaTime;
+                //
+                totalTime += Time.deltaTime;
+                //
 
                 //ghost scare timer stuff
                 if (ghostTimer >= 1 /* && GhostState == Scared*/)
@@ -154,8 +165,9 @@ public class UIManager : MonoBehaviour
         else
         {
             //Debug.Log("check 1");
-            
-            
+
+            pacCtrl.enabled = false;
+
             if (countDownText != null)
             {
                 //Debug.Log("check 2");
@@ -188,16 +200,22 @@ public class UIManager : MonoBehaviour
             }
         }
         
+        if (pacManager != null && pacManager.palletNum == 0)
+        {
+            isPause = true;
+        }
 
     }// end of Update()
 
     public void DrawLives()
     {
-        Debug.Log(Screen.currentResolution);
+        //Debug.Log(Screen.currentResolution);
         for (int i = 0; i < pacManager.Lives; i++)
         {
             Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
-            drawCor.x += 40f;
+            //Debug.Log(Screen.width);
+            //drawCor.x += 80f; //40f
+            drawCor.x += (float)(Screen.width * 0.04);
         }
         drawCor = new Vector3(28f, 28f, 0f);
     }
@@ -239,7 +257,7 @@ public class UIManager : MonoBehaviour
         //exitButton.onClick.GetPersistentEventCount();
         exitButton.onClick.RemoveListener(ExitGame);
         //exitButton.onClick.GetPersistentEventCount();
-
+        pacCtrl.resetMapArray();
         GameManager.currentGameState = GameManager.GameState.Start;
         //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         
@@ -277,6 +295,7 @@ public class UIManager : MonoBehaviour
         if (scene.buildIndex == 0)
         {
             resetTimers();
+            
 
             Debug.Log("Start scene is called. ");
             //Destroy(gameObject);

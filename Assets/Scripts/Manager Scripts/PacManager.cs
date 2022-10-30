@@ -8,6 +8,8 @@ public class PacManager : MonoBehaviour
     public int Lives = 3;
     public int Score = 0;
     public int palletNum = 224;
+
+    //public AudioSource
     //public CherryController cherryCtrl;
     
     // Start is called before the first frame update

@@ -47,7 +47,8 @@ public class PacStudentController : MonoBehaviour
     public AudioClip eatClip;
     */    
 
-    private int[,] levelMap = {
+    //[SerializeField]
+    public int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
         {2,5,3,4,4,3,5,3,4,4,4,3,5,4,4,5,3,4,4,4,3,5,3,4,4,3,5,2},
@@ -317,7 +318,7 @@ public class PacStudentController : MonoBehaviour
 
     }// end of Update()
 
-    // Collision handling codes is in CollisionManager.cs
+    // Collision handling codes is in PacManager.cs
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject.tag);    
@@ -350,6 +351,7 @@ public class PacStudentController : MonoBehaviour
     private bool checkMovement(Vector2 currentPos)
     {
         //return (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < levelMap.GetLength(0) && currentPos.y < levelMap.GetLength(0));
+        
 
         if (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < 30 && currentPos.y < levelMap.GetLength(0) - 2)
         {
@@ -365,6 +367,8 @@ public class PacStudentController : MonoBehaviour
                     pacAudioSource.clip = eatClip;
                     pacAudioSource.Play();
                 }
+                //
+                levelMap[(int)currentPos.x, (int)currentPos.y] = 0;
                 //
                 playOnce = false;
                 wallAhead = false;
@@ -425,9 +429,10 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 0;
                         //pacMovement.SetMovementDirection(input);
+                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
-                                                                                 //Debug.Log("Can move up");
+                        //checkEating(); //Debug.Log("Can move up");
                         return true;
                     }
                     /*
@@ -442,6 +447,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 1;
                         //pacMovement.SetMovementDirection(input);
+                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x, currentPos.y + 1);
                         //Debug.Log("Can move right");
@@ -453,6 +459,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 2;
                         //pacMovement.SetMovementDirection(input);
+                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x + 1, currentPos.y);
                         //Debug.Log("Can move down");
@@ -464,6 +471,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 3;
                         //pacMovement.SetMovementDirection(input);
+                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x, currentPos.y - 1);
                         //Debug.Log("Can move left");
@@ -492,6 +500,7 @@ public class PacStudentController : MonoBehaviour
 
     public void SetMovementDirection(int moveState)// consider change to switch(moveState)
     {// smaller move time value means faster speed. 
+        
         if (activeTween == null)
         {
             //Debug.Log("Setting direction");
@@ -535,7 +544,60 @@ public class PacStudentController : MonoBehaviour
 
 
     // Above are the codes from PacMovement
+    /*
+    public void checkEating()
+    {
+        currentPos = new Vector2(currentPos.x, currentPos.y + 1);
+        if (levelMap[currentPos.x, currentPos.y] == 5 || levelMap[currentPos.x, currentPos.y] == 6)
+        {
 
+        }
+        else if {
 
+        }
+    }
+    */
+
+    public void resetMapArray()
+    {
+        activeTween = null;
+        currentPos = new Vector2(1f, 1f);
+        levelMap = new int[,] {
+            { 1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
+            { 2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
+            { 2,5,3,4,4,3,5,3,4,4,4,3,5,4,4,5,3,4,4,4,3,5,3,4,4,3,5,2},
+            { 2,6,4,0,0,4,5,4,0,0,0,4,5,4,4,5,4,0,0,0,4,5,4,0,0,4,6,2},
+            { 2,5,3,4,4,3,5,3,4,4,4,3,5,3,3,5,3,4,4,4,3,5,3,4,4,3,5,2},
+            { 2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2},
+            { 2,5,3,4,4,3,5,3,3,5,3,4,4,4,4,4,4,3,5,3,3,5,3,4,4,3,5,2},
+            { 2,5,3,4,4,3,5,4,4,5,3,4,4,3,3,4,4,3,5,4,4,5,3,4,4,3,5,2},
+            { 2,5,5,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,5,5,2},
+            { 1,2,2,2,2,1,5,4,3,4,4,3,0,4,4,0,3,4,4,3,4,5,1,2,2,2,2,1},
+            { 0,0,0,0,0,2,5,4,3,4,4,3,0,3,3,0,3,4,4,3,4,5,2,0,0,0,0,0},
+            { 0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0,0,0,4,4,5,2,0,0,0,0,0},
+            { 0,0,0,0,0,2,5,4,4,0,3,4,4,4,4,4,4,3,0,4,4,5,2,0,0,0,0,0},// The entrance into the ghost spawning area will be disabled through this array
+            { 2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
+            { 0,0,0,0,0,0,5,0,0,0,4,0,0,0,0,0,0,4,0,0,0,5,0,0,0,0,0,0},
+            { 0,0,0,0,0,0,5,0,0,0,4,0,0,0,0,0,0,4,0,0,0,5,0,0,0,0,0,0},
+            { 2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
+            { 0,0,0,0,0,2,5,4,4,0,3,4,4,4,4,4,4,3,0,4,4,5,2,0,0,0,0,0},// The entrance into the ghost spawning area will be disabled through this array
+            { 0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0,0,0,4,4,5,2,0,0,0,0,0},
+            { 0,0,0,0,0,2,5,4,3,4,4,3,0,3,3,0,3,4,4,3,4,5,2,0,0,0,0,0},
+            { 1,2,2,2,2,1,5,4,3,4,4,3,0,4,4,0,3,4,4,3,4,5,1,2,2,2,2,1},
+            { 2,5,5,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,5,5,2},
+            { 2,5,3,4,4,3,5,4,4,5,3,4,4,3,3,4,4,3,5,4,4,5,3,4,4,3,5,2},
+            { 2,5,3,4,4,3,5,3,3,5,3,4,4,4,4,4,4,3,5,3,3,5,3,4,4,3,5,2},
+            { 2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2},
+            { 2,5,3,4,4,3,5,3,4,4,4,3,5,3,3,5,3,4,4,4,3,5,3,4,4,3,5,2},
+            { 2,6,4,0,0,4,5,4,0,0,0,4,5,4,4,5,4,0,0,0,4,5,4,0,0,4,6,2},
+            { 2,5,3,4,4,3,5,3,4,4,4,3,5,4,4,5,3,4,4,4,3,5,3,4,4,3,5,2},
+            { 2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
+            { 1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
+            // I hate myself doing this ;p
+        };
+        currentInput = 0;
+        lastInput = 0;
+        pacAudioSource.clip = null;
+    }
 
 }
