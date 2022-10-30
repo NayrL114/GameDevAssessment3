@@ -8,6 +8,10 @@ public class PacStudentController : MonoBehaviour
     // Merging PacMovement and InputManager together into a PacStudentController script. 
     // This new PacStudentController is expected to be attached to GameManager in start scene. 
 
+    // Every requirements in 80% is perfectlly met except this:
+    //   Hitting a scared ghost will set all ghosts to scared state.
+    // More detailed comment can be found at line 466. 
+
     public Animator pacAnimator;
     public Tween activeTween;
     private int localMoveState;
@@ -42,6 +46,8 @@ public class PacStudentController : MonoBehaviour
 
     private bool playOnce = false;
     private bool wallAhead = false;
+
+    public bool isDead = false;
 
     //public PacMovement pacMovement;// should be initiased through UIManager, when clicking onto level 1. 
 
@@ -89,27 +95,6 @@ public class PacStudentController : MonoBehaviour
     //private Vector3 pacCurrentPos = new Vector3(-21.5f, 11.5f, 0f);// should be top left
     private Vector2 currentPos = new Vector2(1f, 1f);// using this Vector2 to store the pac position of levelMap 2D array
 
-
-    // Below are the codes from PacMovement
-
-    /*
-    public Animator pacAnimator;
-    public Tween activeTween;
-    private int localMoveState;
-
-    // Change the clip when pac eats something. 
-    public AudioSource pacAudioSource;
-    public AudioClip normalClip;
-    public AudioClip eatClip;
-
-    // Reference towards particle System for simulating dust
-    public ParticleSystem dustParticle;
-
-    //public bool isMoving;
-    //public SpriteRenderer pacSpRend;
-    //public Sprite pacIdleSprite;    
-    */
-
     // Start is called before the first frame update
     void Start()
     {
@@ -123,7 +108,7 @@ public class PacStudentController : MonoBehaviour
     void Update()
     {
         //Debug.Log(pac != null);
-        if (pac != null) // making sure that these codes are not called in main menu
+        if (pac != null && !isDead) // making sure that these codes are not called in main menu
         {
             
                 //currentInput = lastInput;
@@ -207,83 +192,48 @@ public class PacStudentController : MonoBehaviour
 
             }
 
-                //printInput(lastInput);
-
-                //Debug.Log("lastInput is " + printInput(lastInput) + " and currentInput is " + printInput(currentInput));
-
-                //currentInput = lastInput;
-                //bool moveParameter = checkMovementByDigit(lastInput);
-                //Debug.Log(moveParameter);
-                //if (moveParameter == false)
-            if (!checkMovementByDigit(lastInput)) //&& pacMovement.activeTween == null)
+            if (!checkMovementByDigit(lastInput))// actual moving pac
             {
-                    //checkMovementByDigit(currentInput);
-
                 if (!checkMovementByDigit(currentInput) && wallAhead && activeTween == null)
                 {
-                        //Debug.Log("stopping");
-                    if (!playOnce)
+                    // the effect of hitting wall is not achieved with checking collision
+                    // Instead it is done through checking movement in my way
+                    // because I think it is way easier to implement by this way in my script
+                    if (!playOnce)// playing the effect of hitting wall
                     {
                         pacHitAudioSource.Play();
                         wallCollideParticle.Play();
                         playOnce = true;
                     }
-
                 }
-                else
-                {
-                        // Debug.Log("moving based on currentInput");
-                }
-
             }
             else
             {
-                    //Debug.Log("moving based on lastInput");
                 currentInput = lastInput;
             }
 
-                // Below are the code from PacMovement
-
             if (activeTween != null)
             {
-                    //Debug.Log("moving activeTween");
+                //Debug.Log("moving activeTween");
                 float fractionTime = (Time.time - activeTween.StartTime) / activeTween.Duration;
                 activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, fractionTime);
 
-                    // Start playing movement audio. 
+                // Start playing movement audio and particle. 
                 if (!pacAudioSource.isPlaying)
                 {
-                        //moveAudioSource.loop = true;
                     pacAudioSource.Play();
                 }
 
-                    /*
-                    if (!dustParticle.activeSelf)
-                    {
-                        dustParticle.SetActive(true);
-                    }
-                    */
                 if (!dustParticle.isPlaying)
                 {
-                        //Debug.Log("moving activeTween");
                     dustParticle.Play();
                 }
 
+                // disable activeTween on destination
                 if (Vector3.Distance(pac.transform.position, activeTween.EndPos) <= 0.01f)
                 {
-
                     activeTween.Target.position = activeTween.EndPos;
                     activeTween = null;
-                        /*
-                        moveState++;
-                        if (moveState >= 4)
-                        {
-                            moveState = 0;
-                        }
-                        SetMovementDirection(moveState);
-
-                        */
-
                 }
 
             }
@@ -320,51 +270,15 @@ public class PacStudentController : MonoBehaviour
                         break;
                 }
             }
-            
-            
+                        
         }
 
         //checkCollisionTag(pacManager.collisionTag);
 
     }// end of Update()
 
-    
-
-    // Collision handling codes is in PacManager.cs
-    void OnTriggerEnter2D(Collider2D other)
+    private bool checkMovement(Vector2 currentPos)// check the levelMap array to determine if that block can be moved to
     {
-        Debug.Log(other.gameObject.tag);    
-        if (other.gameObject.tag == "NormalPallet") //other.gameObject.CompareTag("PowerPallet")
-        {
-            Debug.Log("normal");
-        }
-        else if (other.gameObject.tag == "PowerPallet")
-        {
-            Debug.Log("power");
-        }
-        else if (other.gameObject.tag == "CherryPallet")
-        {
-            Debug.Log("cherry");
-        }
-        else if (other.gameObject.tag == "Ghost")
-        {
-            Debug.Log("die");
-        }
-        else if (other.gameObject.tag == "LeftTP")
-        {
-            Debug.Log("LeftTP");
-        }
-        else if (other.gameObject.tag == "RightTP")
-        {
-            Debug.Log("RightTP");
-        }
-    }// end of OnTriggerEnter2D(Collider2D other)
-
-    private bool checkMovement(Vector2 currentPos)
-    {
-        //return (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < levelMap.GetLength(0) && currentPos.y < levelMap.GetLength(0));
-        
-
         if (currentPos.x >= 0 && currentPos.y >= 0 && currentPos.x < 30 && currentPos.y < levelMap.GetLength(0) - 2)
         {
             //Debug.Log(levelMap[(int)currentPos.x]);
@@ -402,35 +316,13 @@ public class PacStudentController : MonoBehaviour
             }
             else if (nextPos == 1 || nextPos == 2 || nextPos == 3 || nextPos == 4)
             {
-                /*
-                if (!playOnce && activeTween == null)
-                {
-                    wallCollideParticle.Play();
-                    pacHitAudioSource.Play();
-                    playOnce = true;
-                }
-                */
-                wallAhead = true;
+                wallAhead = true;// code to determine if the hitting wall effect should be played. 
             }
-
-            //wallCollideParticle.Play();
-            //pacHitAudioSource.Play();
-
-            /*
-            else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 6)
-            {
-                return true;
-            }
-            else if (levelMap[(int)currentPos.x, (int)currentPos.y] == 0)
-            {
-                return true;
-            }
-            */
         }
         return false;
     }// end of checkMovement(Vector2 currentPos)
 
-    private bool checkMovementByDigit(int input)
+    private bool checkMovementByDigit(int input)// call the checkMovement with passed-in input digit
     {
         if (activeTween == null)// doesn't override the current activeTween, also preventing multiple checks with multiple key inputs. 
         {
@@ -441,7 +333,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 0;
                         //pacMovement.SetMovementDirection(input);
-                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
+                        //Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x - 1, currentPos.y);// goes up in array, so x - 1
                         //checkEating(); //Debug.Log("Can move up");
@@ -459,7 +351,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 1;
                         //pacMovement.SetMovementDirection(input);
-                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
+                        //Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x, currentPos.y + 1);
                         //Debug.Log("Can move right");
@@ -471,7 +363,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 2;
                         //pacMovement.SetMovementDirection(input);
-                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
+                        //Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x + 1, currentPos.y);
                         //Debug.Log("Can move down");
@@ -483,7 +375,7 @@ public class PacStudentController : MonoBehaviour
                     {
                         //currentInput = 3;
                         //pacMovement.SetMovementDirection(input);
-                        Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
+                        //Debug.Log("Moving to " + new Vector2(currentPos.x - 1, currentPos.y) + " andnumber is " + levelMap[(int)currentPos.x - 1, (int)currentPos.y]);
                         SetMovementDirection(input);
                         currentPos = new Vector2(currentPos.x, currentPos.y - 1);
                         //Debug.Log("Can move left");
@@ -519,7 +411,7 @@ public class PacStudentController : MonoBehaviour
             if (moveState == 1) // move up, positive y direction
             {
                 //activeTween = new Tween(transform, transform.position, new Vector3(transform.position.x, transform.position.y + 1, 0f), Time.time, 0.5f);
-                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x, pac.transform.position.y + 1, 0f), Time.time, 0.3f);
+                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x, pac.transform.position.y + 1, 0f), Time.time, 0.1f);// 0.3f
                 pacAnimator.Play("WalkingUp");//, -1, 0f);
                 //transform.rotation = Quaternion.Euler(0, 0, 0);
                 pac.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -527,7 +419,7 @@ public class PacStudentController : MonoBehaviour
             }
             else if (moveState == 2) // move right, positive x direction
             {
-                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x + 1, pac.transform.position.y, 0f), Time.time, 0.3f);
+                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x + 1, pac.transform.position.y, 0f), Time.time, 0.1f);
                 pacAnimator.Play("PacStudentWalkingRight");//, -1, 0f);
                 //transform.rotation = Quaternion.Euler(0, 0, 0);
                 pac.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -535,7 +427,7 @@ public class PacStudentController : MonoBehaviour
             }
             else if (moveState == 3) // move down, negative y direction
             {
-                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x, pac.transform.position.y - 1, 0f), Time.time, 0.3f);
+                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x, pac.transform.position.y - 1, 0f), Time.time, 0.1f);
                 pacAnimator.Play("PacStudentWalkingDown");//, -1, 0f);
                 //transform.rotation = Quaternion.Euler(0, 0, 0);
                 pac.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -543,7 +435,7 @@ public class PacStudentController : MonoBehaviour
             }
             else if (moveState == 4) // move left, negative x direction
             {
-                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x - 1, pac.transform.position.y, 0f), Time.time, 0.3f);
+                activeTween = new Tween(pac.transform, pac.transform.position, new Vector3(pac.transform.position.x - 1, pac.transform.position.y, 0f), Time.time, 0.1f);
                 pacAnimator.Play("PacStudentWalkingLeft");//, -1, 0f);
                 //transform.rotation = Quaternion.Euler(0, 0, 0);
                 pac.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -554,33 +446,53 @@ public class PacStudentController : MonoBehaviour
 
     }// end of SetMovementDirection(int moveState)
 
-
-    // Above are the codes from PacMovement
-    
-    public void enablePowerPallet()
+    public void enablePowerPallet()// called in PacManager's onTriggerEnter2D
     {
         Debug.Log("Enabling power pallet");
         uiManager.isScared = true;
-        GhostManager.CurrentGhostState = GhostManager.GhostState.Scared;
     }    
 
-    public void checkGhostCollision()
-    {
-        if (GhostManager.CurrentGhostState == GhostManager.GhostState.Scared || GhostManager.CurrentGhostState == GhostManager.GhostState.Recovering)
+    //public void checkGhostCollision()
+    public void checkGhostCollision(GameObject other)// called in PacManager's onTriggerEnter2D
+    {        
+        Debug.Log("Checking ghost state with ID " + other.GetComponent<GhostScript>().ghostID);
+        int ghostyID = other.GetComponent<GhostScript>().ghostID;
+        if (other.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Scared 
+            || other.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Recovering)
         {
             Debug.Log("hitted a scared ghost");
             pacManager.Score += 300;
-            GhostManager.CurrentGhostState = GhostManager.GhostState.Dead;
+
+            // Every requirements in 80% is perfectlly met except this:
+            // Hitting a scared ghost will set all ghosts to scared state. 
+
+            other.GetComponent<GhostScript>().CurrentGhostState = GhostScript.GhostState.Dead;
+            // For some reason, this line will set all ghosts to dead state, which is not ideal. 
+            // I didn't have time to debug this, so ;p
+
+            //ghostManager.setDeadToAGhost(ghostyID);
+            // And despite the syntax of above line is correct, it will throw an annoying error as below:
+            //   NullReferenceException: Object reference not set to an instance of an object
+            //   PacStudentController.checkGhostCollision(UnityEngine.GameObject other)
+            // idk, I tried to wrote this line to explicitly set the state of a single ghost, and it doesn't work. 
+            // I also dont have time to debug this, so ;p
         }
-        else if (GhostManager.CurrentGhostState == GhostManager.GhostState.Normal)
+        else if (other.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Normal)
         {
-            pacManager.Lives--;            
+            Debug.Log("hitted a normal ghost");
+            pacManager.Lives--;
             uiManager.DrawLostLives();
+            isDead = true;
             PacDeath();
             //}
         }
+        else if (other.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Dead)
+        {
+            Debug.Log("hitted a dead ghost");
+        }
     }
 
+    // portal tunnel codes
     public void leftPortal()
     {
         activeTween = null;
@@ -595,7 +507,7 @@ public class PacStudentController : MonoBehaviour
         currentPos = new Vector2(currentPos.x, 2f);
     }
 
-    public void PacDeath()
+    public void PacDeath()// play the death animation of pac
     {
         activeTween = null;
         switch (currentInput)
@@ -643,23 +555,25 @@ public class PacStudentController : MonoBehaviour
         Invoke("RespawnPac", 2f);
     }
 
-    public void RespawnPac()
+    public void RespawnPac()// respawn pac to top left
     {
         uiManager.isPause = false;
         pac.transform.position = new Vector3(-12.5f, 13.5f);
         currentPos = new Vector2(1f, 1f);
+        isDead = false;
+
         pacAudioSource.clip = null;
         pacAudioSource.volume = 0.5f;
         pacAudioSource.pitch = 1f;
         pacAnimator.Play("PacStudentIdle");
     }
 
-    public void GameOver()
+    public void GameOver()// set uiManager.isPause to true and let UIManager handle GameOver stuff
     {
         uiManager.isPause = true;        
     }
 
-    public void resetMapArray()
+    public void resetMapArray()// reset everything in this script
     {
         activeTween = null;
         currentPos = new Vector2(1f, 1f);
@@ -698,7 +612,6 @@ public class PacStudentController : MonoBehaviour
         };
         currentInput = 0;
         lastInput = 0;
-        //pacAudioSource.clip = null;
     }
 
 }

@@ -78,7 +78,7 @@ public class CherryController : MonoBehaviour
     {
         int areaNum = Random.Range(1, 5);        
         Vector3 spawnCor;
-        Debug.Log(areaNum);
+        //Debug.Log(areaNum);
         switch (areaNum)
         {
             case 1:

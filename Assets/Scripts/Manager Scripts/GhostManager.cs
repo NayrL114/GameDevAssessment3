@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostManager : MonoBehaviour
 {
-
+    /*
     public enum GhostState
     {
         Normal,
@@ -24,82 +24,181 @@ public class GhostManager : MonoBehaviour
             currentGhostState = value;
         }
     }
+    */
 
     public Animator ghostAnimator;
     public AudioSource bgmAudioSource;
     public AudioClip normalClip;
     public AudioClip scaredClip;
-    public AudioClip deadClip;
-    public bool isDead = false;
-    public bool isScared = false;
-    public float deadTimer = 0;
+    public AudioClip deadClip;    
+    public float ghostTimer = 0;
 
     public UIManager uiManager;
+
+    public bool hasScared = false;
+    public bool hasDead = false;
+    public bool hasNormal = false;
+    public bool setScared = false;
+    public bool setRecovered = false;
+    public bool setNormal = false;
+
+    [SerializeField] public GameObject[] ghosts = new GameObject[4];
+    public GhostScript[] ghostScripts = new GhostScript[4];
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {       
 
-        if (isDead)
+        if (uiManager.isScared)
         {
-            deadTimer += Time.deltaTime;
-            Debug.Log(deadTimer);
-            if (deadTimer >= 5)
+            ghostTimer += Time.deltaTime;
+
+            if (!setScared)
             {
-                currentGhostState = GhostState.Normal;
-                isDead = false;
-                deadTimer = 0;
+                setAllScaredState();
+                setScared = true;
             }
-            
+
+            if (ghostTimer >= 7 && !setRecovered)
+            {
+                setRecoveringState();
+                setRecovered = true;
+            }
+
+            if (ghostTimer >= 10 && !setNormal)
+            {
+                setNormalState();
+                setNormal = true;
+            }
+        }
+        else
+        {
+            ghostTimer = 0;
+            setScared = false;
+            setRecovered = false;
+            setNormal = false;
         }
 
-        if (bgmAudioSource != null && ghostAnimator != null)
+        //if (bgmAudioSource != null && ghostAnimator != null)
+        if (bgmAudioSource != null && ghosts.Length != 0) // checking all ghost state and set BGM
         {
-            if (currentGhostState == GhostState.Scared)
+            foreach (GameObject ghost in ghosts)
+            {
+                if (ghost.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Scared)
+                {
+                    //bgmAudioSource.clip = scaredClip;
+                    hasScared = true;
+                }
+                else if (ghost.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Dead)
+                {
+                    if (uiManager.isScared)
+                    {
+                        //bgmAudioSource.clip = deadClip;
+                        hasDead = true;
+                    }
+                }
+                else if (ghost.GetComponent<GhostScript>().CurrentGhostState == GhostScript.GhostState.Normal)
+                {
+                    //bgmAudioSource.clip = normalClip;
+                    hasNormal = true;
+                }
+            }
+
+            if (hasDead)
+            {
+                bgmAudioSource.clip = deadClip;
+            }
+            else if (hasScared)
             {
                 bgmAudioSource.clip = scaredClip;
-                ghostAnimator.Play("GhostOneScared");
-                //bgmAudioSource.Play();
             }
-            else if (currentGhostState == GhostState.Dead)
-            {
-                if (uiManager.isScared)
-                {
-                    bgmAudioSource.clip = deadClip;
-                }
-                ghostAnimator.Play("GhostOneDeath");
-                isDead = true;
-                //bgmAudioSource.Play();
-            }
-            else if (currentGhostState == GhostState.Recovering)
-            {
-                //bgmAudioSource.clip = deadClip;
-                ghostAnimator.Play("GhostOneRecovering");
-                //bgmAudioSource.Play();
-            }
-            else if (currentGhostState == GhostState.Normal)
+            else if (hasNormal)
             {
                 bgmAudioSource.clip = normalClip;
-                ghostAnimator.Play("GhostOne");
-                //bgmAudioSource.Play();
             }
 
             if (!bgmAudioSource.isPlaying)
             {
                 bgmAudioSource.Play();
             }
+
+            hasDead = false;
+            hasScared = false;
+            hasNormal = false;
+
         }
+                     
 
-        
-        
+    }// end of Update()
 
+    public void startScriptArray()
+    {
+        //ghostScripts = GameObject.FindGameObjectsWithTag("Ghost");
+        for (int i = 0; i < ghosts.Length; i++)
+        {
+            ghostScripts[i] = ghosts[i].GetComponent<GhostScript>();
+        }
     }
 
-    
-}
+    public void setAllScaredState()
+    {
+        foreach (GameObject ghost in ghosts)
+        {            
+            ghost.GetComponent<GhostScript>().CurrentGhostState = GhostScript.GhostState.Scared;
+        }
+    }
+
+    public void setRecoveringState()
+    {
+        foreach (GameObject ghost in ghosts)
+        {
+            GhostScript gScript = ghost.GetComponent<GhostScript>();
+            if (!(gScript.CurrentGhostState == GhostScript.GhostState.Dead))
+            {
+                gScript.CurrentGhostState = GhostScript.GhostState.Recovering;
+            }
+        }
+    }
+
+    public void setNormalState()
+    {
+        foreach (GameObject ghost in ghosts)
+        {
+            GhostScript gScript = ghost.GetComponent<GhostScript>();
+            if (!(gScript.CurrentGhostState == GhostScript.GhostState.Dead))
+            {
+                gScript.CurrentGhostState = GhostScript.GhostState.Normal;
+            }
+        }
+    }
+
+    public void setAllNormalState()
+    {
+        foreach (GameObject ghost in ghosts)
+        {
+            GhostScript gScript = ghost.GetComponent<GhostScript>();
+            gScript.CurrentGhostState = GhostScript.GhostState.Normal;
+        }
+    }
+
+    //public void setDeadToAGhost(GameObject ghosty)
+    public void setDeadToAGhost(int ID)
+    {
+        foreach (GameObject ghost in ghosts)
+        {
+            //if (ghost.GetComponent<GhostScript>().ghostID == ghosty.GetComponent<GhostScript>().ghostID)
+            if (ghost.GetComponent<GhostScript>().ghostID == ID)
+            {
+                ghost.GetComponent<GhostScript>().CurrentGhostState = GhostScript.GhostState.Dead;
+                return;
+            }
+        }
+    }
+
+}// end of everything

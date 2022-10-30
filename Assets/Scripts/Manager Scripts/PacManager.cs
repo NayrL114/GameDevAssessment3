@@ -70,7 +70,9 @@ public class PacManager : MonoBehaviour
         else if (other.gameObject.tag == "Ghost")
         {
             //Debug.Log("die");
-            pacCtrl.checkGhostCollision();
+            //pacCtrl.checkGhostCollision();
+            //Debug.Log(other.gameObject.GetComponent<GhostScript>().ghostID);
+            pacCtrl.checkGhostCollision(other.gameObject);
             //collisionTag = other.gameObject.tag;
         }
         else if (other.gameObject.tag == "LeftTP")

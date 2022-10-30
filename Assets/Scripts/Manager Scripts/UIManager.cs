@@ -128,6 +128,18 @@ public class UIManager : MonoBehaviour
     void Update()
     {      
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (Time.timeScale == 0.0f)
+            {
+                Time.timeScale = 1.0f;
+            }
+            else
+            {
+                Time.timeScale = 0.0f;
+            }
+        }
+
         if (!isPause)
         {
             if (gameTimerText != null && ghostScareTimerText != null && scoreText != null)
@@ -155,10 +167,10 @@ public class UIManager : MonoBehaviour
 
                     if (ghostTimerTxt < 4)
                     {
-                        if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
-                        {
-                            GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
-                        }                        
+                        //if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
+                        //{
+                        //    GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
+                        //}                        
                     }
 
                     if (ghostTimerTxt < 0)
@@ -171,10 +183,10 @@ public class UIManager : MonoBehaviour
                             GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
                         }
                         */
-                        if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
-                        {
-                            GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
-                        }
+                        //if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
+                        //{
+                        //    GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
+                        //}
                         isScared = false;
                         ghostScareText.SetActive(false);
                         ghostScareTimerText.text = "10";
@@ -394,7 +406,7 @@ public class UIManager : MonoBehaviour
         if (exitButton != null){
             exitButton.onClick.RemoveListener(ExitGame);
         }
-        
+        isScared = false;
         //exitButton.onClick.GetPersistentEventCount();
         pacCtrl.resetMapArray();
         GameManager.currentGameState = GameManager.GameState.Start;        
@@ -457,7 +469,7 @@ public class UIManager : MonoBehaviour
         }
         else if (scene.buildIndex == 1)
         {
-            GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
+            
             // UI related stuff that is useful in current script
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
             exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
@@ -501,9 +513,23 @@ public class UIManager : MonoBehaviour
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);
 
+            // Find all ghosts in level 1 and store into an array
+            //ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+            /*
+            GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+            for (int i = 0; i < ghosts.Length; i++)
+            {
+                GhostManager.ghostScripts[i] = ghosts[i].GetComponent<GhostScript>();
+            }
+            */
+            ghostManager.ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+            ghostManager.setAllNormalState();
+            // Method of find all objects with tag is from following video: 
+            // https://www.youtube.com/watch?v=INtG1nm0p2o
+
             // Drawing the live counters. 
             DrawLives();
-                        
+
             loadingPanel.enabled = true;            
             isPause = true;
             ghostScareText.SetActive(false);

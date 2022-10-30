@@ -504,7 +504,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -527820771
   m_SortingLayer: 3
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 535100946, guid: 239c91442d1256a42b76f436c123bcbb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -13000,6 +13000,7 @@ GameObject:
   - component: {fileID: 1233975162}
   - component: {fileID: 1233975161}
   - component: {fileID: 1233975164}
+  - component: {fileID: 1233975165}
   m_Layer: 0
   m_Name: GhostOne
   m_TagString: Ghost
@@ -13121,6 +13122,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4, y: 2.5310175}
   m_EdgeRadius: 0
+--- !u!114 &1233975165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233975160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2637a2ee026e8504f9cc3d6e9413c2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  deadTimer: 0
+  ghostAnimator: {fileID: 1233975161}
+  ghostID: 1
 --- !u!1 &1239022563
 GameObject:
   m_ObjectHideFlags: 0
@@ -23896,9 +23913,10 @@ GameObject:
   - component: {fileID: 1432482544}
   - component: {fileID: 1432482543}
   - component: {fileID: 1432482546}
+  - component: {fileID: 1432482547}
   m_Layer: 0
   m_Name: GhostThree
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24017,6 +24035,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4, y: 2.5033016}
   m_EdgeRadius: 0
+--- !u!114 &1432482547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432482542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2637a2ee026e8504f9cc3d6e9413c2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  deadTimer: 0
+  ghostAnimator: {fileID: 1432482543}
+  ghostID: 3
 --- !u!1 &1450158197
 GameObject:
   m_ObjectHideFlags: 0
@@ -28964,9 +28998,10 @@ GameObject:
   - component: {fileID: 1508774896}
   - component: {fileID: 1508774895}
   - component: {fileID: 1508774898}
+  - component: {fileID: 1508774899}
   m_Layer: 0
   m_Name: GhostFour
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29085,6 +29120,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4, y: 2.5161946}
   m_EdgeRadius: 0
+--- !u!114 &1508774899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508774894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2637a2ee026e8504f9cc3d6e9413c2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  deadTimer: 0
+  ghostAnimator: {fileID: 1508774895}
+  ghostID: 4
 --- !u!1 &1572390846
 GameObject:
   m_ObjectHideFlags: 0
@@ -31689,9 +31740,10 @@ GameObject:
   - component: {fileID: 1754136572}
   - component: {fileID: 1754136571}
   - component: {fileID: 1754136574}
+  - component: {fileID: 1754136575}
   m_Layer: 0
   m_Name: GhostTwo
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31810,6 +31862,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.4, y: 2.518353}
   m_EdgeRadius: 0
+--- !u!114 &1754136575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754136570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2637a2ee026e8504f9cc3d6e9413c2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  deadTimer: 0
+  ghostAnimator: {fileID: 1754136571}
+  ghostID: 2
 --- !u!1 &1762255089
 GameObject:
   m_ObjectHideFlags: 0
