@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviour
         //pacCtrl.uimanager = this;
         cherryController = gameObject.GetComponent<CherryController>();
         ghostManager = gameObject.GetComponent<GhostManager>();
+        ghostManager.uiManager = this;
 
         levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
         levelOneButton.onClick.AddListener(LoadLevelOne);
@@ -136,10 +137,10 @@ public class UIManager : MonoBehaviour
                 //
                 totalTime += Time.deltaTime;
                 //
-                //if (isScared)
-                if (GhostManager.CurrentGhostState == GhostManager.GhostState.Scared 
-                    || GhostManager.CurrentGhostState == GhostManager.GhostState.Recovering 
-                    || GhostManager.CurrentGhostState == GhostManager.GhostState.Dead)
+                if (isScared)
+                //if (GhostManager.CurrentGhostState == GhostManager.GhostState.Scared 
+                    //|| GhostManager.CurrentGhostState == GhostManager.GhostState.Recovering) 
+                    //|| GhostManager.CurrentGhostState == GhostManager.GhostState.Dead)
                 {
                     //ghostScareTimerText.enabled = true;
                     ghostScareText.SetActive(true);
@@ -170,10 +171,14 @@ public class UIManager : MonoBehaviour
                             GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
                         }
                         */
-                        GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
-                        //isScared = false;
+                        if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
+                        {
+                            GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
+                        }
+                        isScared = false;
                         ghostScareText.SetActive(false);
                         ghostScareTimerText.text = "10";
+                        ghostManager.bgmAudioSource.clip = ghostManager.normalClip;
                     }
                 }
 

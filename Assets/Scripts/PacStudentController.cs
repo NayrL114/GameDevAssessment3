@@ -560,7 +560,7 @@ public class PacStudentController : MonoBehaviour
     public void enablePowerPallet()
     {
         Debug.Log("Enabling power pallet");
-        //uiManager.isScared = true;
+        uiManager.isScared = true;
         GhostManager.CurrentGhostState = GhostManager.GhostState.Scared;
     }    
 
@@ -568,6 +568,7 @@ public class PacStudentController : MonoBehaviour
     {
         if (GhostManager.CurrentGhostState == GhostManager.GhostState.Scared || GhostManager.CurrentGhostState == GhostManager.GhostState.Recovering)
         {
+            Debug.Log("hitted a scared ghost");
             pacManager.Score += 300;
             GhostManager.CurrentGhostState = GhostManager.GhostState.Dead;
         }

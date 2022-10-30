@@ -30,6 +30,11 @@ public class GhostManager : MonoBehaviour
     public AudioClip normalClip;
     public AudioClip scaredClip;
     public AudioClip deadClip;
+    public bool isDead = false;
+    public bool isScared = false;
+    public float deadTimer = 0;
+
+    public UIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +45,20 @@ public class GhostManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (isDead)
+        {
+            deadTimer += Time.deltaTime;
+            Debug.Log(deadTimer);
+            if (deadTimer >= 5)
+            {
+                currentGhostState = GhostState.Normal;
+                isDead = false;
+                deadTimer = 0;
+            }
+            
+        }
+
         if (bgmAudioSource != null && ghostAnimator != null)
         {
             if (currentGhostState == GhostState.Scared)
@@ -50,8 +69,12 @@ public class GhostManager : MonoBehaviour
             }
             else if (currentGhostState == GhostState.Dead)
             {
-                bgmAudioSource.clip = deadClip;
+                if (uiManager.isScared)
+                {
+                    bgmAudioSource.clip = deadClip;
+                }
                 ghostAnimator.Play("GhostOneDeath");
+                isDead = true;
                 //bgmAudioSource.Play();
             }
             else if (currentGhostState == GhostState.Recovering)
