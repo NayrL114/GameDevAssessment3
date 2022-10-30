@@ -74,6 +74,10 @@ public class UIManager : MonoBehaviour
     // bool for onSceneLoad
     private bool hasbeenloaded = false;
 
+    // Main menu score and time
+    public Text mainMenuScore;
+    public Text mainMenuTime;
+
     void Awake()
     {
         if (instance == null)
@@ -102,12 +106,17 @@ public class UIManager : MonoBehaviour
 
         countDownText = GameObject.FindWithTag("CountDown").GetComponent<Text>();
 
+        mainMenuScore = GameObject.FindWithTag("MainMenuScore").GetComponent<Text>();
+        mainMenuTime = GameObject.FindWithTag("MainMenuTime").GetComponent<Text>();
+
         drawCor = new Vector3(28f, 28f, 0f);
 
         //Debug.Log(Screen.width + " " + Screen.height);
         loadingPanelT.sizeDelta = new Vector2(loadingCanvasT.rect.width, loadingCanvasT.rect.height);
 
         loadingPanel.enabled = false;
+
+        getRecord();
         
         //ghostScareText.enabled = false;
 
@@ -259,8 +268,61 @@ public class UIManager : MonoBehaviour
         loadingPanel.enabled = true;
         countDownText.enabled = true;
         countDownText.text = "Game Over";
-        Debug.Log("check 2");
+        updateRecord();
+        //Debug.Log("check 2");
         Invoke("ExitGame", 3f);
+                
+    }
+
+    public void getRecord()
+    {
+        if (PlayerPrefs.HasKey("Score"))
+        {
+            mainMenuScore.text = PlayerPrefs.GetInt("Score") + "";
+            mainMenuTime.text = ChangeTimeToTxt(PlayerPrefs.GetInt("Min")) 
+                + ":" + ChangeTimeToTxt(PlayerPrefs.GetInt("Sec")) 
+                + ":" + ConvertMilSecTxt(PlayerPrefs.GetInt("MilSec"));
+        }
+    }
+
+    public void updateRecord()
+    {
+        if (!PlayerPrefs.HasKey("Score") && !PlayerPrefs.HasKey("MilSec") && !PlayerPrefs.HasKey("Sec") && !PlayerPrefs.HasKey("Min"))
+        {// if there is no score and time record
+            PlayerPrefs.SetInt("Score", pacManager.Score);
+            PlayerPrefs.SetInt("MilSec", gameTimerMilSec);
+            PlayerPrefs.SetInt("Sec", gameTimerSec);
+            PlayerPrefs.SetInt("Min", gameTimerMin);
+        }
+        else
+        {
+            if (pacManager.Score > PlayerPrefs.GetInt("Score"))
+            {// if there is a better score
+                PlayerPrefs.SetInt("Score", pacManager.Score);
+                PlayerPrefs.SetInt("MilSec", gameTimerMilSec);
+                PlayerPrefs.SetInt("Sec", gameTimerSec);
+                PlayerPrefs.SetInt("Min", gameTimerMin);
+            }
+            else if (pacManager.Score == PlayerPrefs.GetInt("Score"))
+            {// if score is the same but better time
+                if (gameTimerMilSec < PlayerPrefs.GetInt("MilSec"))
+                {
+                    PlayerPrefs.SetInt("MilSec", gameTimerMilSec);
+                }
+                
+                if (gameTimerSec < PlayerPrefs.GetInt("Sec"))
+                {
+                    PlayerPrefs.SetInt("Sec", gameTimerSec);
+                }
+                
+                if (gameTimerMin < PlayerPrefs.GetInt("Min"))
+                {
+                    PlayerPrefs.SetInt("Min", gameTimerMin);
+                }             
+                
+            }
+        }
+        PlayerPrefs.Save();
     }
 
     public void DrawLives()
@@ -330,11 +392,13 @@ public class UIManager : MonoBehaviour
         
         //exitButton.onClick.GetPersistentEventCount();
         pacCtrl.resetMapArray();
-        GameManager.currentGameState = GameManager.GameState.Start;
+        GameManager.currentGameState = GameManager.GameState.Start;        
         //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("check 3");
-        
+        //Debug.Log("check 3");
+
         SceneManager.LoadScene(0);
+        
+        //getRecord();
         //SceneManager.sceneLoaded += OnSceneLoad;
         //SceneManager.sceneLoaded += OnSceneLoad;
     }
@@ -382,6 +446,9 @@ public class UIManager : MonoBehaviour
             Debug.Log("check 5");
             loadingPanel.enabled = false;
             countDownText.text = "";
+            mainMenuScore = GameObject.FindWithTag("MainMenuScore").GetComponent<Text>();
+            mainMenuTime = GameObject.FindWithTag("MainMenuTime").GetComponent<Text>();
+            getRecord();
         }
         else if (scene.buildIndex == 1)
         {

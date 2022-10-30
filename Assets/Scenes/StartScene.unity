@@ -5632,7 +5632,7 @@ GameObject:
   - component: {fileID: 695809599}
   m_Layer: 5
   m_Name: BestTime
-  m_TagString: Untagged
+  m_TagString: MainMenuTime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6055,6 +6055,8 @@ MonoBehaviour:
   - {fileID: 0}
   levelOneButton: {fileID: 0}
   exitButton: {fileID: 0}
+  mainMenuScore: {fileID: 0}
+  mainMenuTime: {fileID: 0}
 --- !u!114 &1022001097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6830,7 +6832,7 @@ GameObject:
   - component: {fileID: 1704356408}
   m_Layer: 5
   m_Name: HighScore
-  m_TagString: Untagged
+  m_TagString: MainMenuScore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
