@@ -5998,6 +5998,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e91d0984849f24eb793c237d0b5778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostAnimator: {fileID: 0}
+  bgmAudioSource: {fileID: 0}
+  normalClip: {fileID: 8300000, guid: 445bc305a6add8444a6c7876f3b4e0ad, type: 3}
+  scaredClip: {fileID: 8300000, guid: c945a39aaee4bec44a772a1c955501fe, type: 3}
+  deadClip: {fileID: 8300000, guid: 102458c9b4b5a8940bf3fcc9101ced58, type: 3}
 --- !u!114 &1022001096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6019,26 +6024,34 @@ MonoBehaviour:
   SecTxt: 
   MinTxt: 
   totalTime: 0
+  overTimer: 0
+  gameTimerText: {fileID: 0}
   ghostTimer: 0
-  ghostTimerTxt: 10
+  ghostTimerTxt: 9
+  isScared: 0
+  ghostScareTimerText: {fileID: 0}
+  ghostScareText: {fileID: 0}
   countDown: 0
   countDownTxt: 
   actualCountdown: 4
   countDownText: {fileID: 0}
   isPause: 0
-  gameTimerText: {fileID: 0}
-  ghostScareTimerText: {fileID: 0}
   scoreText: {fileID: 0}
   LivesIndicator: {fileID: 6549467060351294971, guid: edf8e14e5f3812b43bd283010759f1a1, type: 3}
   hudTransform: {fileID: 0}
   drawCor: {x: 0, y: 0, z: 0}
-  pacManager: {fileID: 0}
   pacCtrl: {fileID: 0}
   cherryController: {fileID: 0}
+  pacManager: {fileID: 0}
+  ghostManager: {fileID: 0}
   palletNum: 224
   loadingCanvasT: {fileID: 1232604233}
   loadingPanel: {fileID: 712269698}
   loadingPanelT: {fileID: 712269696}
+  batteries:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   levelOneButton: {fileID: 0}
   exitButton: {fileID: 0}
 --- !u!114 &1022001097
@@ -6068,6 +6081,7 @@ MonoBehaviour:
   Lives: 3
   Score: 0
   palletNum: 224
+  pacCtrl: {fileID: 0}
 --- !u!114 &1022001099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6101,14 +6115,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pacAnimator: {fileID: 0}
   pacAudioSource: {fileID: 0}
+  pacHitAudioSource: {fileID: 0}
   normalClip: {fileID: 8300000, guid: d45cf7d3c78337e4590e22edc75454f0, type: 3}
   eatClip: {fileID: 8300000, guid: 12caac2dbad9a5f408bb333aec1047bb, type: 3}
-  pacHitAudioSource: {fileID: 0}
+  pacDeathClip: {fileID: 8300000, guid: c1489e38c94598443b4e034a6a03bfa4, type: 3}
   dustParticle: {fileID: 0}
   wallCollideParticle: {fileID: 0}
+  deathParticle: {fileID: 0}
   lastInput: 0
   currentInput: 0
   gameManager: {fileID: 1022001097}
+  pacManager: {fileID: 0}
+  uiManager: {fileID: 0}
+  ghostManager: {fileID: 0}
   pac: {fileID: 0}
 --- !u!1 &1227792484
 GameObject:
@@ -6146,7 +6165,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 100}
+  m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1227792486
 MonoBehaviour:

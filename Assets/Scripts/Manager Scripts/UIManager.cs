@@ -21,10 +21,15 @@ public class UIManager : MonoBehaviour
     public string SecTxt;
     public string MinTxt;
     public float totalTime;// tracking total time spend on playing this level
+    public float overTimer;
+    public Text gameTimerText;
 
     // ghost scare timer
     public float ghostTimer;
-    public int ghostTimerTxt = 10;
+    public int ghostTimerTxt = 9;
+    public bool isScared = false;
+    public Text ghostScareTimerText;
+    public GameObject ghostScareText;
 
     // countdown timer
     public float countDown;
@@ -33,9 +38,9 @@ public class UIManager : MonoBehaviour
     public Text countDownText;
     public bool isPause = false;
 
-    // Text variables
-    public Text gameTimerText;
-    public Text ghostScareTimerText;
+    public bool isOver = false;
+
+    // Text variables        
     public Text scoreText;
 
     // Lives indicator, assigned prefab within Unity inspector
@@ -45,15 +50,11 @@ public class UIManager : MonoBehaviour
     public Transform hudTransform;
     public Vector3 drawCor;
 
-    // Reference to PacManager
-    public PacManager pacManager;
-
     // Reference to other scripts
-    //public InputManager inputManager;
-
-    // Reference to PacStudentController & CherryController
     public PacStudentController pacCtrl;
     public CherryController cherryController;
+    public PacManager pacManager;
+    public GhostManager ghostManager;
 
     // number of pallets in level 1
     public int palletNum = 224;
@@ -62,6 +63,9 @@ public class UIManager : MonoBehaviour
     public RectTransform loadingCanvasT;
     public Image loadingPanel;
     public RectTransform loadingPanelT;
+
+    // Lives object array
+    public GameObject[] batteries = new GameObject[3];
 
     // buttons
     [SerializeField] public Button levelOneButton;
@@ -91,6 +95,7 @@ public class UIManager : MonoBehaviour
         pacCtrl = gameObject.GetComponent<PacStudentController>();
         //pacCtrl.uimanager = this;
         cherryController = gameObject.GetComponent<CherryController>();
+        ghostManager = gameObject.GetComponent<GhostManager>();
 
         levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
         levelOneButton.onClick.AddListener(LoadLevelOne);
@@ -103,42 +108,67 @@ public class UIManager : MonoBehaviour
         loadingPanelT.sizeDelta = new Vector2(loadingCanvasT.rect.width, loadingCanvasT.rect.height);
 
         loadingPanel.enabled = false;
+        
+        //ghostScareText.enabled = false;
 
         //SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            DrawLives();
-        }
+    {      
 
         if (!isPause)
         {
             if (gameTimerText != null && ghostScareTimerText != null && scoreText != null)
             {
                 // Timer Stuffs
-                gameTimer += Time.deltaTime;
-                ghostTimer += Time.deltaTime;
+                gameTimer += Time.deltaTime;  
                 //
                 totalTime += Time.deltaTime;
                 //
-
-                //ghost scare timer stuff
-                if (ghostTimer >= 1 /* && GhostState == Scared*/)
+                //if (isScared)
+                if (GhostManager.CurrentGhostState == GhostManager.GhostState.Scared 
+                    || GhostManager.CurrentGhostState == GhostManager.GhostState.Recovering 
+                    || GhostManager.CurrentGhostState == GhostManager.GhostState.Dead)
                 {
-                    //Debug.Log(ghostTimerTxt);
-                    ghostScareTimerText.text = "" + ghostTimerTxt;
-                    ghostTimerTxt--;
-                    ghostTimer = 0;
+                    //ghostScareTimerText.enabled = true;
+                    ghostScareText.SetActive(true);
+                    ghostTimer += Time.deltaTime;                    
+                    if (ghostTimer >= 1 /* && GhostState == Scared*/)
+                    {
+                        //Debug.Log(GhostManager.CurrentGhostState);
+                        ghostScareTimerText.text = "" + ghostTimerTxt;
+                        ghostTimerTxt--;
+                        ghostTimer = 0;
+                    }
+
+                    if (ghostTimerTxt < 4)
+                    {
+                        if (!(GhostManager.CurrentGhostState == GhostManager.GhostState.Dead))
+                        {
+                            GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
+                        }                        
+                    }
+
+                    if (ghostTimerTxt < 0)
+                    {
+                        ghostTimerTxt = 9;
+                        //ghostScareTimerText.enabled = false;
+                        /*
+                        if (!GhostManager.CurrentGhostState == GhostManager.GhostState.Dead)
+                        {
+                            GhostManager.CurrentGhostState = GhostManager.GhostState.Recovering;
+                        }
+                        */
+                        GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
+                        //isScared = false;
+                        ghostScareText.SetActive(false);
+                        ghostScareTimerText.text = "10";
+                    }
                 }
 
-                if (ghostTimerTxt < 0)
-                {
-                    ghostTimerTxt = 10;
-                }
+                //ghost scare timer stuff                
 
                 // 00:00:00 timer stuff
                 // Below timer implementation is from https://answers.unity.com/questions/514378/timer-in-milliseconds-to-mmssms.html
@@ -162,13 +192,13 @@ public class UIManager : MonoBehaviour
                 scoreText.text = "" + pacManager.Score;
             }
         }
-        else
+        else // if isPause is true
         {
             //Debug.Log("check 1");
 
             pacCtrl.enabled = false;
 
-            if (countDownText != null)
+            if (countDownText != null && !isOver)
             {
                 //Debug.Log("check 2");
                 countDown += Time.deltaTime; 
@@ -198,21 +228,47 @@ public class UIManager : MonoBehaviour
                     pacCtrl.enabled = true;
                 }
             }
+
+            if (pacManager.Lives == 0)
+            {                
+                //pacCtrl.enabled = false;
+                GameOver();
+            }
         }
         
         if (pacManager != null && pacManager.palletNum == 0)
         {
             isPause = true;
+            if (!isOver)
+            {
+                GameOver();
+                //isPause = true;
+                isOver = true;
+            }
+            
         }
 
     }// end of Update()
+
+    public void GameOver()
+    {
+        isPause = false;
+        pacCtrl.enabled = false;
+        cherryController.enabled = false;
+
+        loadingPanel.enabled = true;
+        countDownText.enabled = true;
+        countDownText.text = "Game Over";
+        Debug.Log("check 2");
+        Invoke("ExitGame", 3f);
+    }
 
     public void DrawLives()
     {
         //Debug.Log(Screen.currentResolution);
         for (int i = 0; i < pacManager.Lives; i++)
         {
-            Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
+            batteries[i] = (GameObject)Instantiate(LivesIndicator, drawCor, Quaternion.identity, hudTransform);
             //Debug.Log(Screen.width);
             //drawCor.x += 80f; //40f
             drawCor.x += (float)(Screen.width * 0.04);
@@ -220,14 +276,27 @@ public class UIManager : MonoBehaviour
         drawCor = new Vector3(28f, 28f, 0f);
     }
 
+    public void DrawLostLives()
+    {
+        for (int i = 0; i < batteries.Length; i++)
+        {
+            if (batteries[i] != null)
+            {
+                batteries[i].SetActive(false);
+                Destroy(batteries[i]);
+            }
+            
+            //batteries[i] = null;
+        }
+        DrawLives();
+    }
+
     public void LoadLevelOne()
     {
         Debug.Log("opening level 1");
         //levelOneButton.onClick.GetPersistentEventCount();
         levelOneButton.onClick.RemoveListener(LoadLevelOne);
-        //levelOneButton.onClick.GetPersistentEventCount();
-
-        
+        //levelOneButton.onClick.GetPersistentEventCount();        
 
         GameManager.currentGameState = GameManager.GameState.LevelOne;
         SceneManager.LoadScene(1);
@@ -241,7 +310,7 @@ public class UIManager : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoad;
             hasbeenloaded = true;
         }
-
+        isOver = false;
         //startCountDown();
     }
 
@@ -255,11 +324,15 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("returning to main menu");
         //exitButton.onClick.GetPersistentEventCount();
-        exitButton.onClick.RemoveListener(ExitGame);
+        if (exitButton != null){
+            exitButton.onClick.RemoveListener(ExitGame);
+        }
+        
         //exitButton.onClick.GetPersistentEventCount();
         pacCtrl.resetMapArray();
         GameManager.currentGameState = GameManager.GameState.Start;
         //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("check 3");
         
         SceneManager.LoadScene(0);
         //SceneManager.sceneLoaded += OnSceneLoad;
@@ -296,7 +369,6 @@ public class UIManager : MonoBehaviour
         {
             resetTimers();
             
-
             Debug.Log("Start scene is called. ");
             //Destroy(gameObject);
             //cherryController.enabled = !cherryController.enabled;
@@ -313,7 +385,9 @@ public class UIManager : MonoBehaviour
             //Button levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
             levelOneButton = GameObject.FindWithTag("LevelOneButton").GetComponent<Button>();
             levelOneButton.onClick.AddListener(LoadLevelOne);
-
+            Debug.Log("check 5");
+            loadingPanel.enabled = false;
+            countDownText.text = "";
         }
         else if (scene.buildIndex == 1)
         {
@@ -321,8 +395,9 @@ public class UIManager : MonoBehaviour
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
             exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();
             ghostScareTimerText = GameObject.FindWithTag("ScareTimer").GetComponent<Text>();
+            ghostScareText = GameObject.FindWithTag("ScareTimer");
             hudTransform = GameObject.FindWithTag("HUD").GetComponent<Transform>();
-            ghostScareTimerText.text = "" + ghostTimerTxt;
+            //ghostScareTimerText.text = "" + ghostTimerTxt;
             scoreText = GameObject.FindWithTag("Score").GetComponent<Text>();
             //pac = gameObject.GetComponent<PacManager>();
 
@@ -331,11 +406,13 @@ public class UIManager : MonoBehaviour
             //inputManager.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
 
             // Help PacStudentController to get stuffs in level 1
-            pacCtrl.pac = GameObject.FindWithTag("Player");
+            pacCtrl.pac = GameObject.FindWithTag("Player");            
+            pacCtrl.uiManager = this;
             pacCtrl.pacAnimator = GameObject.FindWithTag("Player").GetComponent<Animator>();
             pacCtrl.pacAudioSource = GameObject.FindWithTag("Player").GetComponent<AudioSource>();
             pacCtrl.dustParticle = GameObject.FindWithTag("DustEffect").GetComponent<ParticleSystem>();
             pacCtrl.wallCollideParticle = GameObject.FindWithTag("WallEffect").GetComponent<ParticleSystem>();
+            pacCtrl.deathParticle = GameObject.FindWithTag("DeathEffect").GetComponent<ParticleSystem>();            
             pacCtrl.pacHitAudioSource = GameObject.FindWithTag("HitWallAudio").GetComponent<AudioSource>();
 
             // Enable the cherryController attached to Game Manager
@@ -347,7 +424,12 @@ public class UIManager : MonoBehaviour
 
             // get the pacManager, and assign a cherryControlled into pacManager
             pacManager = GameObject.FindWithTag("Player").GetComponent<PacManager>();
+            pacCtrl.pacManager = pacManager;
+            pacManager.pacCtrl = pacCtrl;
             //pacManager.cherryCtrl = gameObject.GetComponent<CherryController>();
+
+            ghostManager.ghostAnimator = GameObject.FindWithTag("Ghost").GetComponent<Animator>();
+            ghostManager.bgmAudioSource = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
 
             // Enabling the exitButton in level 1
             exitButton.onClick.AddListener(ExitGame);
@@ -357,6 +439,7 @@ public class UIManager : MonoBehaviour
                         
             loadingPanel.enabled = true;            
             isPause = true;
+            ghostScareText.SetActive(false);
         }
     }    
 

@@ -7,7 +7,9 @@ public class PacManager : MonoBehaviour
 
     public int Lives = 3;
     public int Score = 0;
-    public int palletNum = 224;
+    public int palletNum = 2;// 224
+    //public string collisionTag;
+    public PacStudentController pacCtrl;
 
     //public AudioSource
     //public CherryController cherryCtrl;
@@ -22,14 +24,14 @@ public class PacManager : MonoBehaviour
     void Update()
     {
         //Debug.Log(palletNum);
-        if (palletNum == 0 || Input.GetKeyDown(KeyCode.Escape))
-        {
-            Time.timeScale = 0f;
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Time.timeScale = 1f;
-        }
+        //if (palletNum == 0 || Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    Time.timeScale = 0f;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Time.timeScale = 1f;
+        //}
     }
 
     public void ReceiveDamage()
@@ -45,6 +47,7 @@ public class PacManager : MonoBehaviour
             //Debug.Log("normal");
             Score += 10;
             palletNum--;
+            //collisionTag = other.gameObject.tag;
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "PowerPallet")
@@ -52,6 +55,8 @@ public class PacManager : MonoBehaviour
             //Debug.Log("power");
             Score += 10;
             palletNum--;
+            //collisionTag = other.gameObject.tag;
+            pacCtrl.enablePowerPallet();
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "CherryPallet")
@@ -59,19 +64,24 @@ public class PacManager : MonoBehaviour
             //Debug.Log("cherry");
             Score += 100;
             //cherryCtrl.clearStuff();
+            //collisionTag = other.gameObject.tag;
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "Ghost")
         {
-            Debug.Log("die");
+            //Debug.Log("die");
+            pacCtrl.checkGhostCollision();
+            //collisionTag = other.gameObject.tag;
         }
         else if (other.gameObject.tag == "LeftTP")
         {
             Debug.Log("LeftTP");
+            //collisionTag = other.gameObject.tag;
         }
         else if (other.gameObject.tag == "RightTP")
         {
             Debug.Log("RightTP");
+            //collisionTag = other.gameObject.tag;
         }
 
     }
