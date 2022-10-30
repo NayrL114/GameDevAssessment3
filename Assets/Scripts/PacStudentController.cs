@@ -580,6 +580,20 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
+    public void leftPortal()
+    {
+        activeTween = null;
+        pac.transform.position = new Vector3(11.5f, pac.transform.position.y, pac.transform.position.x);
+        currentPos = new Vector2(currentPos.x, 25f);
+    }
+
+    public void rightPortal()        
+    {
+        activeTween = null;
+        pac.transform.position = new Vector3(-11.5f, pac.transform.position.y, pac.transform.position.x);
+        currentPos = new Vector2(currentPos.x, 2f);
+    }
+
     public void PacDeath()
     {
         activeTween = null;

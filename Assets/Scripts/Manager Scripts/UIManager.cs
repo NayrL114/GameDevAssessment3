@@ -348,12 +348,6 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 0f;
     }
-    
-    public void startCountDown()
-    {
-        
-    }
-    
 
     public void resetTimers()
     {
@@ -391,6 +385,7 @@ public class UIManager : MonoBehaviour
         }
         else if (scene.buildIndex == 1)
         {
+            GhostManager.CurrentGhostState = GhostManager.GhostState.Normal;
             // UI related stuff that is useful in current script
             gameTimerText = GameObject.FindWithTag("GameTimer").GetComponent<Text>();
             exitButton = GameObject.FindWithTag("ExitButton").GetComponent<Button>();

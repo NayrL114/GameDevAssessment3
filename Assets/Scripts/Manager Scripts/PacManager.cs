@@ -76,11 +76,13 @@ public class PacManager : MonoBehaviour
         else if (other.gameObject.tag == "LeftTP")
         {
             Debug.Log("LeftTP");
+            pacCtrl.leftPortal();
             //collisionTag = other.gameObject.tag;
         }
         else if (other.gameObject.tag == "RightTP")
         {
             Debug.Log("RightTP");
+            pacCtrl.rightPortal();
             //collisionTag = other.gameObject.tag;
         }
 
