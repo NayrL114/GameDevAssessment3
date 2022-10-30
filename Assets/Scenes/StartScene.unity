@@ -5758,7 +5758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6003,6 +6003,24 @@ MonoBehaviour:
   normalClip: {fileID: 8300000, guid: 445bc305a6add8444a6c7876f3b4e0ad, type: 3}
   scaredClip: {fileID: 8300000, guid: c945a39aaee4bec44a772a1c955501fe, type: 3}
   deadClip: {fileID: 8300000, guid: 102458c9b4b5a8940bf3fcc9101ced58, type: 3}
+  ghostTimer: 0
+  uiManager: {fileID: 0}
+  hasScared: 0
+  hasDead: 0
+  hasNormal: 0
+  setScared: 0
+  setRecovered: 0
+  setNormal: 0
+  ghosts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ghostScripts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1022001096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6132,6 +6150,7 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   ghostManager: {fileID: 0}
   pac: {fileID: 0}
+  isDead: 0
 --- !u!1 &1227792484
 GameObject:
   m_ObjectHideFlags: 0
